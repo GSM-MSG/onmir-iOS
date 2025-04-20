@@ -1,0 +1,566 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		D011D31A2DB4DAAD00412C5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D011D2FB2DB4DAAB00412C5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D011D3022DB4DAAB00412C5C;
+			remoteInfo = ONMIR;
+		};
+		D011D3242DB4DAAD00412C5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D011D2FB2DB4DAAB00412C5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D011D3022DB4DAAB00412C5C;
+			remoteInfo = ONMIR;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D011D3032DB4DAAB00412C5C /* ONMIR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ONMIR.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D011D3192DB4DAAD00412C5C /* ONMIRTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ONMIRTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D011D3232DB4DAAD00412C5C /* ONMIRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ONMIRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D011D32B2DB4DAAD00412C5C /* Exceptions for "ONMIR" folder in "ONMIR" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = D011D3022DB4DAAB00412C5C /* ONMIR */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		D011D3052DB4DAAB00412C5C /* ONMIR */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D011D32B2DB4DAAD00412C5C /* Exceptions for "ONMIR" folder in "ONMIR" target */,
+			);
+			path = ONMIR;
+			sourceTree = "<group>";
+		};
+		D011D31C2DB4DAAD00412C5C /* ONMIRTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ONMIRTests;
+			sourceTree = "<group>";
+		};
+		D011D3262DB4DAAD00412C5C /* ONMIRUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ONMIRUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D011D3002DB4DAAB00412C5C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D011D3162DB4DAAD00412C5C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D011D3202DB4DAAD00412C5C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D011D2FA2DB4DAAB00412C5C = {
+			isa = PBXGroup;
+			children = (
+				D011D3052DB4DAAB00412C5C /* ONMIR */,
+				D011D31C2DB4DAAD00412C5C /* ONMIRTests */,
+				D011D3262DB4DAAD00412C5C /* ONMIRUITests */,
+				D011D3042DB4DAAB00412C5C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D011D3042DB4DAAB00412C5C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D011D3032DB4DAAB00412C5C /* ONMIR.app */,
+				D011D3192DB4DAAD00412C5C /* ONMIRTests.xctest */,
+				D011D3232DB4DAAD00412C5C /* ONMIRUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D011D3022DB4DAAB00412C5C /* ONMIR */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D011D32C2DB4DAAD00412C5C /* Build configuration list for PBXNativeTarget "ONMIR" */;
+			buildPhases = (
+				D011D2FF2DB4DAAB00412C5C /* Sources */,
+				D011D3002DB4DAAB00412C5C /* Frameworks */,
+				D011D3012DB4DAAB00412C5C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				D011D3052DB4DAAB00412C5C /* ONMIR */,
+			);
+			name = ONMIR;
+			packageProductDependencies = (
+			);
+			productName = ONMIR;
+			productReference = D011D3032DB4DAAB00412C5C /* ONMIR.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D011D3182DB4DAAD00412C5C /* ONMIRTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D011D3312DB4DAAD00412C5C /* Build configuration list for PBXNativeTarget "ONMIRTests" */;
+			buildPhases = (
+				D011D3152DB4DAAD00412C5C /* Sources */,
+				D011D3162DB4DAAD00412C5C /* Frameworks */,
+				D011D3172DB4DAAD00412C5C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D011D31B2DB4DAAD00412C5C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D011D31C2DB4DAAD00412C5C /* ONMIRTests */,
+			);
+			name = ONMIRTests;
+			packageProductDependencies = (
+			);
+			productName = ONMIRTests;
+			productReference = D011D3192DB4DAAD00412C5C /* ONMIRTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D011D3222DB4DAAD00412C5C /* ONMIRUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D011D3342DB4DAAD00412C5C /* Build configuration list for PBXNativeTarget "ONMIRUITests" */;
+			buildPhases = (
+				D011D31F2DB4DAAD00412C5C /* Sources */,
+				D011D3202DB4DAAD00412C5C /* Frameworks */,
+				D011D3212DB4DAAD00412C5C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D011D3252DB4DAAD00412C5C /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				D011D3262DB4DAAD00412C5C /* ONMIRUITests */,
+			);
+			name = ONMIRUITests;
+			packageProductDependencies = (
+			);
+			productName = ONMIRUITests;
+			productReference = D011D3232DB4DAAD00412C5C /* ONMIRUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D011D2FB2DB4DAAB00412C5C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1630;
+				LastUpgradeCheck = 1630;
+				TargetAttributes = {
+					D011D3022DB4DAAB00412C5C = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					D011D3182DB4DAAD00412C5C = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = D011D3022DB4DAAB00412C5C;
+					};
+					D011D3222DB4DAAD00412C5C = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = D011D3022DB4DAAB00412C5C;
+					};
+				};
+			};
+			buildConfigurationList = D011D2FE2DB4DAAB00412C5C /* Build configuration list for PBXProject "ONMIR" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D011D2FA2DB4DAAB00412C5C;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = D011D3042DB4DAAB00412C5C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D011D3022DB4DAAB00412C5C /* ONMIR */,
+				D011D3182DB4DAAD00412C5C /* ONMIRTests */,
+				D011D3222DB4DAAD00412C5C /* ONMIRUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D011D3012DB4DAAB00412C5C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D011D3172DB4DAAD00412C5C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D011D3212DB4DAAD00412C5C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D011D2FF2DB4DAAB00412C5C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D011D3152DB4DAAD00412C5C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D011D31F2DB4DAAD00412C5C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D011D31B2DB4DAAD00412C5C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D011D3022DB4DAAB00412C5C /* ONMIR */;
+			targetProxy = D011D31A2DB4DAAD00412C5C /* PBXContainerItemProxy */;
+		};
+		D011D3252DB4DAAD00412C5C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D011D3022DB4DAAB00412C5C /* ONMIR */;
+			targetProxy = D011D3242DB4DAAD00412C5C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D011D32D2DB4DAAD00412C5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ONMIR/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msg.ONMIR;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D011D32E2DB4DAAD00412C5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ONMIR/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msg.ONMIR;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D011D32F2DB4DAAD00412C5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D011D3302DB4DAAD00412C5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D011D3322DB4DAAD00412C5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msg.ONMIRTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ONMIR.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ONMIR";
+			};
+			name = Debug;
+		};
+		D011D3332DB4DAAD00412C5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msg.ONMIRTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ONMIR.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ONMIR";
+			};
+			name = Release;
+		};
+		D011D3352DB4DAAD00412C5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msg.ONMIRUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ONMIR;
+			};
+			name = Debug;
+		};
+		D011D3362DB4DAAD00412C5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msg.ONMIRUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ONMIR;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D011D2FE2DB4DAAB00412C5C /* Build configuration list for PBXProject "ONMIR" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D011D32F2DB4DAAD00412C5C /* Debug */,
+				D011D3302DB4DAAD00412C5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D011D32C2DB4DAAD00412C5C /* Build configuration list for PBXNativeTarget "ONMIR" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D011D32D2DB4DAAD00412C5C /* Debug */,
+				D011D32E2DB4DAAD00412C5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D011D3312DB4DAAD00412C5C /* Build configuration list for PBXNativeTarget "ONMIRTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D011D3322DB4DAAD00412C5C /* Debug */,
+				D011D3332DB4DAAD00412C5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D011D3342DB4DAAD00412C5C /* Build configuration list for PBXNativeTarget "ONMIRUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D011D3352DB4DAAD00412C5C /* Debug */,
+				D011D3362DB4DAAD00412C5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D011D2FB2DB4DAAB00412C5C /* Project object */;
+}
