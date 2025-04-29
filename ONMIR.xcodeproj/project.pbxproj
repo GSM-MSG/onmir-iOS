@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46EE698D2DC10341001736D6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 46EE698C2DC10341001736D6 /* SnapKit */; };
 		D0FD53152DB4DDC400F2593B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D0FD53142DB4DDC400F2593B /* .gitignore */; };
 /* End PBXBuildFile section */
 
@@ -70,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46EE698D2DC10341001736D6 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,6 +133,7 @@
 			);
 			name = ONMIR;
 			packageProductDependencies = (
+				46EE698C2DC10341001736D6 /* SnapKit */,
 			);
 			productName = ONMIR;
 			productReference = D011D3032DB4DAAB00412C5C /* ONMIR.app */;
@@ -214,6 +217,9 @@
 			);
 			mainGroup = D011D2FA2DB4DAAB00412C5C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				46EE698B2DC10341001736D6 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D011D3042DB4DAAB00412C5C /* Products */;
 			projectDirPath = "";
@@ -570,6 +576,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		46EE698B2DC10341001736D6 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		46EE698C2DC10341001736D6 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 46EE698B2DC10341001736D6 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D011D2FB2DB4DAAB00412C5C /* Project object */;
 }
