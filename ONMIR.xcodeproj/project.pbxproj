@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		46EE698D2DC10341001736D6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 46EE698C2DC10341001736D6 /* SnapKit */; };
+		46EE6A232DC196D9001736D6 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 46EE6A222DC196D9001736D6 /* Nuke */; };
 		D0FD53152DB4DDC400F2593B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D0FD53142DB4DDC400F2593B /* .gitignore */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46EE698D2DC10341001736D6 /* SnapKit in Frameworks */,
+				46EE6A232DC196D9001736D6 /* Nuke in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,6 +136,7 @@
 			name = ONMIR;
 			packageProductDependencies = (
 				46EE698C2DC10341001736D6 /* SnapKit */,
+				46EE6A222DC196D9001736D6 /* Nuke */,
 			);
 			productName = ONMIR;
 			productReference = D011D3032DB4DAAB00412C5C /* ONMIR.app */;
@@ -219,6 +222,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				46EE698B2DC10341001736D6 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				46EE6A212DC196D9001736D6 /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D011D3042DB4DAAB00412C5C /* Products */;
@@ -586,6 +590,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		46EE6A212DC196D9001736D6 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.8.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -593,6 +605,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 46EE698B2DC10341001736D6 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		46EE6A222DC196D9001736D6 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 46EE6A212DC196D9001736D6 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
