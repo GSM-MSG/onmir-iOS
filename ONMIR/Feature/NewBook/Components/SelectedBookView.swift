@@ -98,6 +98,8 @@ extension NewBookViewController {
             let image = try await imageTask.image
             guard Task.isCancelled == false else { return }
             coverImageView.image = image
+          } catch let error as CancellationError {
+            Logger.info(error)
           } catch {
             Logger.error(error)
           }
