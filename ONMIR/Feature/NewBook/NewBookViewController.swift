@@ -53,6 +53,12 @@ public final class NewBookViewController: UIViewController {
   private var searchTask: Task<Void, Never>?
   private let searchDebounceTime: TimeInterval = 0.3
 
+  private let loadingIndicator: UIActivityIndicatorView = {
+    let indicator = UIActivityIndicatorView(style: .medium)
+    indicator.hidesWhenStopped = true
+    return indicator
+  }()
+
   init(completion: @MainActor @escaping () -> Void) {
     self.completion = completion
     super.init(nibName: nil, bundle: nil)
@@ -84,6 +90,7 @@ public final class NewBookViewController: UIViewController {
   private func setupBindings() {
     observeBooks()
     observeSelectedBooks()
+    observeLoadingState()
   }
 
   private func observeBooks() {
@@ -112,12 +119,31 @@ public final class NewBookViewController: UIViewController {
       }
     }
   }
+  
+  private func observeLoadingState() {
+    withObservationTracking {
+      _ = viewModel.isLoading
+    } onChange: { [weak self] in
+      Task { @MainActor in
+        guard let self else { return }
+        
+        if self.viewModel.isLoading {
+          self.loadingIndicator.startAnimating()
+        } else {
+          self.loadingIndicator.stopAnimating()
+        }
+        
+        self.observeLoadingState()
+      }
+    }
+  }
 
   private func setupUI() {
     view.backgroundColor = .secondarySystemBackground
 
     view.addSubview(selectedBookView)
     view.addSubview(collectionView)
+    view.addSubview(loadingIndicator)
 
     selectedBookView.snp.makeConstraints { make in
       make.top.equalTo(view.safeAreaLayoutGuide)
@@ -127,6 +153,11 @@ public final class NewBookViewController: UIViewController {
     collectionView.snp.makeConstraints { make in
       make.top.equalTo(selectedBookView.snp.bottom)
       make.leading.trailing.bottom.equalToSuperview()
+    }
+    
+    loadingIndicator.snp.makeConstraints { make in
+      make.centerX.equalToSuperview()
+      make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
     }
 
     updateCollectionViewConstraints()
@@ -230,7 +261,7 @@ public final class NewBookViewController: UIViewController {
     if isEmpty {
       var configuration = UIContentUnavailableConfiguration.search()
       configuration.image = .init(systemName: "book.closed")
-      configuration.text = "magnifyingglass.circle.fill"
+      configuration.text = "No Books Found"
       configuration.secondaryText = "Try different keywords or check for typos in your search"
       
       self.contentUnavailableConfiguration = configuration
@@ -251,7 +282,7 @@ public final class NewBookViewController: UIViewController {
     searchTask = Task { [weak self] in
       guard let self = self else { return }
       
-      try? await Task.sleep(for: .seconds(0.5))
+      try? await Task.sleep(for: .seconds(0.3))
       
       guard !Task.isCancelled else { return }
       
@@ -267,6 +298,18 @@ extension NewBookViewController: UICollectionViewDelegate {
   ) {
     guard let book = dataSource.itemIdentifier(for: indexPath) else { return }
     viewModel.toggleBookSelection(book: book)
+  }
+  
+  public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let offsetY = scrollView.contentOffset.y
+    let contentHeight = scrollView.contentSize.height
+    let height = scrollView.frame.size.height
+    
+    if offsetY > contentHeight - height {
+      if let visibleItems = collectionView.indexPathsForVisibleItems.map({ $0.row }).max() {
+        viewModel.loadMoreBooksIfNeeded(currentIndex: visibleItems)
+      }
+    }
   }
 }
 

@@ -93,6 +93,8 @@ extension NewBookViewController {
             await MainActor.run {
               self.coverImageView.image = image
             }
+          } catch let error as CancellationError {
+            Logger.info(error)
           } catch {
             Logger.error(error)
           }

@@ -6,6 +6,7 @@ public struct GoogleBooksClient: Sendable {
     case unexpectedResponse
     case decodingError(Error)
     case underlying(Error)
+    case cancelled
   }
   
   public enum OrderByType: String, Sendable {
@@ -56,6 +57,12 @@ public struct GoogleBooksClient: Sendable {
       return try decoder.decode(BookSearchResponse.self, from: data)
     } catch let decodingError as DecodingError {
       throw GoogleBooksError.decodingError(decodingError)
+    } catch let urlError as URLError {
+      if urlError.code == .cancelled {
+        throw GoogleBooksError.cancelled
+      } else {
+        throw GoogleBooksError.underlying(urlError)
+      }
     } catch {
       throw GoogleBooksError.underlying(error)
     }
