@@ -9,7 +9,7 @@ public final class HomeViewController: UIViewController {
         imageview.contentMode = .scaleAspectFit
         imageview.backgroundColor = .clear
         imageview.image = UIImage(systemName: "list.bullet")
-        imageview.tintColor = .black
+        imageview.tintColor = .label
         return imageview
     }()
     
@@ -25,7 +25,7 @@ public final class HomeViewController: UIViewController {
         imageview.contentMode = .scaleAspectFit
         imageview.backgroundColor = .clear
         imageview.image = UIImage(systemName: "chevron.right")
-        imageview.tintColor = .systemGray3
+        imageview.tintColor = UIColor.quaternaryLabel
         return imageview
     }()
     
@@ -44,8 +44,8 @@ public final class HomeViewController: UIViewController {
     private let addBookButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "plus"), for: .normal)
-        button.backgroundColor = .black
-        button.tintColor = .white
+        button.backgroundColor = UIColor(named: "ButtonBackground")
+        button.tintColor = UIColor(named: "ButtonText")
         button.layer.cornerRadius = 30
         return button
     }()
@@ -67,7 +67,7 @@ public final class HomeViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .secondarySystemBackground
         
         view.addSubview(divider1)
         view.addSubview(listIcon)
