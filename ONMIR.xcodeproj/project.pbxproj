@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		460F8D4C2DC77401003F019A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 460F8D4B2DC77401003F019A /* FirebaseAnalytics */; };
+		460F8D4E2DC77401003F019A /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 460F8D4D2DC77401003F019A /* FirebaseCore */; };
+		460F8D502DC77401003F019A /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 460F8D4F2DC77401003F019A /* FirebaseCrashlytics */; };
+		460F8D522DC77402003F019A /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 460F8D512DC77402003F019A /* FirebaseRemoteConfig */; };
 		46EE698D2DC10341001736D6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 46EE698C2DC10341001736D6 /* SnapKit */; };
 		46EE6A232DC196D9001736D6 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 46EE6A222DC196D9001736D6 /* Nuke */; };
 		D0FD53152DB4DDC400F2593B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D0FD53142DB4DDC400F2593B /* .gitignore */; };
@@ -41,6 +45,8 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				"Support/Firebase/Production/GoogleService-release-Info.plist",
+				"Support/Firebase/Staging/GoogleService-staging-Info.plist",
 			);
 			target = D011D3022DB4DAAB00412C5C /* ONMIR */;
 		};
@@ -74,6 +80,10 @@
 			files = (
 				46EE698D2DC10341001736D6 /* SnapKit in Frameworks */,
 				46EE6A232DC196D9001736D6 /* Nuke in Frameworks */,
+				460F8D502DC77401003F019A /* FirebaseCrashlytics in Frameworks */,
+				460F8D522DC77402003F019A /* FirebaseRemoteConfig in Frameworks */,
+				460F8D4E2DC77401003F019A /* FirebaseCore in Frameworks */,
+				460F8D4C2DC77401003F019A /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,7 +134,9 @@
 			buildPhases = (
 				D011D2FF2DB4DAAB00412C5C /* Sources */,
 				D011D3002DB4DAAB00412C5C /* Frameworks */,
+				460F8D5B2DC77850003F019A /* Firebase Info configure */,
 				D011D3012DB4DAAB00412C5C /* Resources */,
+				462108A92DCF8B4200E9A1F2 /* Firebase Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -137,6 +149,10 @@
 			packageProductDependencies = (
 				46EE698C2DC10341001736D6 /* SnapKit */,
 				46EE6A222DC196D9001736D6 /* Nuke */,
+				460F8D4B2DC77401003F019A /* FirebaseAnalytics */,
+				460F8D4D2DC77401003F019A /* FirebaseCore */,
+				460F8D4F2DC77401003F019A /* FirebaseCrashlytics */,
+				460F8D512DC77402003F019A /* FirebaseRemoteConfig */,
 			);
 			productName = ONMIR;
 			productReference = D011D3032DB4DAAB00412C5C /* ONMIR.app */;
@@ -223,6 +239,7 @@
 			packageReferences = (
 				46EE698B2DC10341001736D6 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				46EE6A212DC196D9001736D6 /* XCRemoteSwiftPackageReference "Nuke" */,
+				460F8D4A2DC77401003F019A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D011D3042DB4DAAB00412C5C /* Products */;
@@ -260,6 +277,52 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		460F8D5B2DC77850003F019A /* Firebase Info configure */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Firebase Info configure";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\nGOOGLESERVICE_INFO_STAGING=\"${PROJECT_DIR}/${TARGET_NAME}/Support/Firebase/Staging/GoogleService-staging-Info.plist\"\nGOOGLESERVICE_INFO_PROD=\"${PROJECT_DIR}/${TARGET_NAME}/Support/Firebase/Production/GoogleService-release-Info.plist\"\n\necho \"${PROJECT_DIR}\"\n\necho \"${CONFIGURATION}\"\nif [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n  cp \"${GOOGLESERVICE_INFO_STAGING}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nelif [ \"${CONFIGURATION}\" == \"Release\" ]; then\n  cp \"${GOOGLESERVICE_INFO_PROD}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nelse\n    echo \"Error: Invalid Build Configuration. Expected 'Debug' or 'Release'.\"\n    exit 1\nfi\n\n";
+		};
+		462108A92DCF8B4200E9A1F2 /* Firebase Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Firebase Crashlytics";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D011D2FF2DB4DAAB00412C5C /* Sources */ = {
@@ -306,6 +369,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ONMIR/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -333,6 +397,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ONMIR/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -582,6 +647,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		460F8D4A2DC77401003F019A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.0;
+			};
+		};
 		46EE698B2DC10341001736D6 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -601,6 +674,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		460F8D4B2DC77401003F019A /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 460F8D4A2DC77401003F019A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		460F8D4D2DC77401003F019A /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 460F8D4A2DC77401003F019A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		460F8D4F2DC77401003F019A /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 460F8D4A2DC77401003F019A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		460F8D512DC77402003F019A /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 460F8D4A2DC77401003F019A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
 		46EE698C2DC10341001736D6 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 46EE698B2DC10341001736D6 /* XCRemoteSwiftPackageReference "SnapKit" */;

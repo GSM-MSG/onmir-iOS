@@ -41,13 +41,13 @@ extension HomeViewController {
             contentView.addSubview(readingProgressLabel)
 
             coverImageView.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview().inset(50)
+                make.leading.trailing.equalToSuperview()
                 make.height.equalTo(392)
             }
 
             readingProgressLabel.snp.makeConstraints { make in
                 make.top.equalTo(coverImageView.snp.bottom).offset(8)
-                make.leading.equalToSuperview().inset(50)
+                make.leading.equalToSuperview()
             }
         }
 

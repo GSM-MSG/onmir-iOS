@@ -104,7 +104,8 @@ public final class HomeViewController: UIViewController {
         
         readingBookCollectionView.snp.makeConstraints { make in
             make.top.equalTo(divider2.snp.bottom).offset(30)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.equalToSuperview().inset(50)
+            make.trailing.bottom.equalToSuperview()
         }
         
         addBookButton.snp.makeConstraints { make in
@@ -123,14 +124,15 @@ public final class HomeViewController: UIViewController {
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             
             let groupSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(0.9),
+                widthDimension: .fractionalWidth(0.7),
                 heightDimension: .fractionalHeight(1.0)
             )
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             let section = NSCollectionLayoutSection(group: group)
             section.orthogonalScrollingBehavior = .groupPagingCentered
-            section.interGroupSpacing = 8
+            section.interGroupSpacing = 50
+            section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 50)
             return section
         }
     }
