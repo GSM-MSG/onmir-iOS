@@ -13,6 +13,9 @@
 		460F8D522DC77402003F019A /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 460F8D512DC77402003F019A /* FirebaseRemoteConfig */; };
 		46EE698D2DC10341001736D6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 46EE698C2DC10341001736D6 /* SnapKit */; };
 		46EE6A232DC196D9001736D6 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 46EE6A222DC196D9001736D6 /* Nuke */; };
+		D00EF58D2DD96127004EE90D /* Book+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00EF58B2DD96127004EE90D /* Book+CoreDataClass.swift */; };
+		D00EF58E2DD96127004EE90D /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00EF58C2DD96127004EE90D /* Book+CoreDataProperties.swift */; };
+		D08A69332DC851130022DA0F /* OnmirModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D08A69312DC851130022DA0F /* OnmirModel.xcdatamodeld */; };
 		D0FD53152DB4DDC400F2593B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D0FD53142DB4DDC400F2593B /* .gitignore */; };
 /* End PBXBuildFile section */
 
@@ -34,9 +37,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D00EF58B2DD96127004EE90D /* Book+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Book+CoreDataClass.swift"; path = "ONMIR/Core/CoreData/DataClass/Book/Book+CoreDataClass.swift"; sourceTree = "<group>"; };
+		D00EF58C2DD96127004EE90D /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Book+CoreDataProperties.swift"; path = "ONMIR/Core/CoreData/DataClass/Book/Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D011D3032DB4DAAB00412C5C /* ONMIR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ONMIR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D011D3192DB4DAAD00412C5C /* ONMIRTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ONMIRTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D011D3232DB4DAAD00412C5C /* ONMIRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ONMIRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D08A69322DC851130022DA0F /* OnmirModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OnmirModel.xcdatamodel; sourceTree = "<group>"; };
 		D0FD53142DB4DDC400F2593B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -45,8 +51,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				"Support/Firebase/Production/GoogleService-release-Info.plist",
-				"Support/Firebase/Staging/GoogleService-staging-Info.plist",
 			);
 			target = D011D3022DB4DAAB00412C5C /* ONMIR */;
 		};
@@ -107,6 +111,9 @@
 		D011D2FA2DB4DAAB00412C5C = {
 			isa = PBXGroup;
 			children = (
+				D00EF58B2DD96127004EE90D /* Book+CoreDataClass.swift */,
+				D00EF58C2DD96127004EE90D /* Book+CoreDataProperties.swift */,
+				D08A69312DC851130022DA0F /* OnmirModel.xcdatamodeld */,
 				D0FD53142DB4DDC400F2593B /* .gitignore */,
 				D011D3052DB4DAAB00412C5C /* ONMIR */,
 				D011D31C2DB4DAAD00412C5C /* ONMIRTests */,
@@ -136,7 +143,6 @@
 				D011D3002DB4DAAB00412C5C /* Frameworks */,
 				460F8D5B2DC77850003F019A /* Firebase Info configure */,
 				D011D3012DB4DAAB00412C5C /* Resources */,
-				462108A92DCF8B4200E9A1F2 /* Firebase Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -298,30 +304,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\nGOOGLESERVICE_INFO_STAGING=\"${PROJECT_DIR}/${TARGET_NAME}/Support/Firebase/Staging/GoogleService-staging-Info.plist\"\nGOOGLESERVICE_INFO_PROD=\"${PROJECT_DIR}/${TARGET_NAME}/Support/Firebase/Production/GoogleService-release-Info.plist\"\n\necho \"${PROJECT_DIR}\"\n\necho \"${CONFIGURATION}\"\nif [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n  cp \"${GOOGLESERVICE_INFO_STAGING}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nelif [ \"${CONFIGURATION}\" == \"Release\" ]; then\n  cp \"${GOOGLESERVICE_INFO_PROD}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nelse\n    echo \"Error: Invalid Build Configuration. Expected 'Debug' or 'Release'.\"\n    exit 1\nfi\n\n";
 		};
-		462108A92DCF8B4200E9A1F2 /* Firebase Crashlytics */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
-				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
-				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
-			);
-			name = "Firebase Crashlytics";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${BUILD_DIR%Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -329,6 +311,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D08A69332DC851130022DA0F /* OnmirModel.xcdatamodeld in Sources */,
+				D00EF58D2DD96127004EE90D /* Book+CoreDataClass.swift in Sources */,
+				D00EF58E2DD96127004EE90D /* Book+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -705,6 +690,19 @@
 			productName = Nuke;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		D08A69312DC851130022DA0F /* OnmirModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D08A69322DC851130022DA0F /* OnmirModel.xcdatamodel */,
+			);
+			currentVersion = D08A69322DC851130022DA0F /* OnmirModel.xcdatamodel */;
+			path = OnmirModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D011D2FB2DB4DAAB00412C5C /* Project object */;
 }
