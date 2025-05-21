@@ -1,7 +1,7 @@
 import UIKit
 
 final class DividerView: UIView {
-    init(height: CGFloat = 1.0, color: UIColor = .systemGray5) {
+    init(height: CGFloat = 1.0, color: UIColor = UIColor.quaternaryLabel) {
         super.init(frame: .zero)
 
         self.backgroundColor = color

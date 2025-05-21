@@ -1,33 +1,8 @@
-import UIKit
 import SnapKit
+import UIKit
 
 public final class HomeViewController: UIViewController {
-    private let divider1 = DividerView()
-    private let divider2 = DividerView()
-    private let listIcon: UIImageView = {
-        let imageview = UIImageView()
-        imageview.contentMode = .scaleAspectFit
-        imageview.backgroundColor = .clear
-        imageview.image = UIImage(systemName: "list.bullet")
-        imageview.tintColor = .label
-        return imageview
-    }()
-    
-    private let listTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "All"
-        label.font = .systemFont(ofSize: 16)
-        return label
-    }()
-    
-    private let chevronRightIcon: UIImageView = {
-        let imageview = UIImageView()
-        imageview.contentMode = .scaleAspectFit
-        imageview.backgroundColor = .clear
-        imageview.image = UIImage(systemName: "chevron.right")
-        imageview.tintColor = UIColor.quaternaryLabel
-        return imageview
-    }()
+    private let bookListSectionRowView = BookListSectionRowView(title: "All")
     
     private lazy var readingBookCollectionView: UICollectionView = {
         let layout = createCompositionalLayout()
@@ -69,41 +44,17 @@ public final class HomeViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .secondarySystemBackground
         
-        view.addSubview(divider1)
-        view.addSubview(listIcon)
-        view.addSubview(listTitleLabel)
-        view.addSubview(chevronRightIcon)
+        view.addSubview(bookListSectionRowView)
         view.addSubview(addBookButton)
         view.addSubview(readingBookCollectionView)
-        view.addSubview(divider2)
         
-        divider1.snp.makeConstraints { make in
+        bookListSectionRowView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(24)
             make.leading.trailing.equalToSuperview().inset(16)
         }
         
-        listIcon.snp.makeConstraints { make in
-            make.top.equalTo(divider1.snp.bottom).offset(12)
-            make.leading.equalTo(view.safeAreaLayoutGuide).inset(16)
-        }
-        
-        listTitleLabel.snp.makeConstraints { make in
-            make.top.equalTo(divider1.snp.bottom).offset(12)
-            make.leading.equalTo(listIcon.snp.trailing).offset(12)
-        }
-        
-        chevronRightIcon.snp.makeConstraints { make in
-            make.top.equalTo(divider1.snp.bottom).offset(12)
-            make.trailing.equalToSuperview().inset(16)
-        }
-        
-        divider2.snp.makeConstraints { make in
-            make.top.equalTo(listTitleLabel.snp.bottom).offset(12)
-            make.leading.trailing.equalToSuperview().inset(16)
-        }
-        
         readingBookCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(divider2.snp.bottom).offset(30)
+            make.top.equalTo(bookListSectionRowView.snp.bottom).offset(30)
             make.leading.equalToSuperview().inset(50)
             make.trailing.bottom.equalToSuperview()
         }
@@ -146,11 +97,21 @@ public final class HomeViewController: UIViewController {
             configuration.button.title = "Add Book"
             configuration.button.background.backgroundColor = .systemBlue
             configuration.button.baseForegroundColor = .white
-
+            
             self.contentUnavailableConfiguration = configuration
         } else {
             self.contentUnavailableConfiguration = nil
         }
+    }
+    
+    private func configureSectionRowAction() {
+        bookListSectionRowView.onTapped = { [weak self] in
+            self?.handleSectionTapped()
+        }
+    }
+    
+    private func handleSectionTapped() {
+        print("📚 BookListSectionRowView was tapped.")
     }
 }
 
