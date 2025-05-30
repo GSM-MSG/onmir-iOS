@@ -31,6 +31,7 @@ extension HomeViewController {
 
         override func prepareForReuse() {
             super.prepareForReuse()
+            imageDownloadTask?.cancel()
         }
         
         private func setupUI() {
@@ -63,6 +64,8 @@ extension HomeViewController {
                         await MainActor.run {
                             self.coverImageView.image = image
                         }
+                    } catch let error as CancellationError {
+                        Logger.info(error)
                     } catch {
                         Logger.error(error)
                     }
