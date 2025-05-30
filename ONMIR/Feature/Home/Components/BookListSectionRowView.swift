@@ -1,7 +1,7 @@
 import SnapKit
 import UIKit
 
-final class BookListSectionRowView: UIView {
+final class BookListSectionRowView: UIControl {
     private let bookListStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -48,13 +48,6 @@ final class BookListSectionRowView: UIView {
         return imageview
     }()
     
-    private lazy var tapGesture: UITapGestureRecognizer = {
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        return gesture
-    }()
-    
-    var onTapped: (() -> Void)?
-    
     init(title: String) {
         super.init(frame: .zero)
         self.listTitleLabel.text = title
@@ -70,7 +63,6 @@ final class BookListSectionRowView: UIView {
     private func setupView() {
         self.backgroundColor = .clear
 
-        addGestureRecognizer(tapGesture)
         isUserInteractionEnabled = true
 
         listContentStackView.addArrangedSubview(listIcon)
@@ -109,9 +101,5 @@ final class BookListSectionRowView: UIView {
         divider2.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
-    }
-    
-    @objc private func handleTap() {
-        onTapped?()
     }
 }
