@@ -22,7 +22,7 @@ final class BookListSectionRowView: UIControl {
 
     private let divider1 = DividerView()
     private let divider2 = DividerView()
-    
+
     private let listIcon: UIImageView = {
         let imageview = UIImageView()
         imageview.contentMode = .scaleAspectFit
@@ -31,14 +31,14 @@ final class BookListSectionRowView: UIControl {
         imageview.tintColor = .label
         return imageview
     }()
-    
+
     private let listTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "All"
         label.font = .systemFont(ofSize: 16)
         return label
     }()
-    
+
     private let chevronRightIcon: UIImageView = {
         let imageview = UIImageView()
         imageview.contentMode = .scaleAspectFit
@@ -47,7 +47,7 @@ final class BookListSectionRowView: UIControl {
         imageview.tintColor = UIColor.quaternaryLabel
         return imageview
     }()
-    
+
     init(title: String) {
         super.init(frame: .zero)
         self.listTitleLabel.text = title
@@ -55,11 +55,19 @@ final class BookListSectionRowView: UIControl {
         setupView()
         setupLayout()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self)
+        if bounds.contains(location) {
+            sendActions(for: .touchUpInside)
+        }
+    }
+
     private func setupView() {
         self.backgroundColor = .clear
 
@@ -75,16 +83,16 @@ final class BookListSectionRowView: UIControl {
 
         addSubview(bookListStackView)
     }
-    
+
     private func setupLayout() {
         bookListStackView.snp.makeConstraints { make in
             make.top.leading.trailing.bottom.equalToSuperview()
         }
-        
+
         listContentStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
         }
-    
+
         listIcon.snp.makeConstraints { make in
             make.width.height.equalTo(24)
         }

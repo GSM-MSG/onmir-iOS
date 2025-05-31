@@ -24,7 +24,7 @@ extension HomeViewController {
             super.init(frame: frame)
             setupUI()
         }
-        
+
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
@@ -33,7 +33,7 @@ extension HomeViewController {
             super.prepareForReuse()
             imageDownloadTask?.cancel()
         }
-        
+
         private func setupUI() {
             self.backgroundColor = .clear
             contentView.backgroundColor = .clear
@@ -60,7 +60,7 @@ extension HomeViewController {
                 self.imageDownloadTask = Task {
                     do {
                         let image = try await ImagePipeline.shared.image(for: thumbnailURL)
-                        
+
                         await MainActor.run {
                             self.coverImageView.image = image
                         }
