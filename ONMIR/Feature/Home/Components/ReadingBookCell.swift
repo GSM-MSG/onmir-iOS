@@ -57,15 +57,12 @@ extension HomeViewController {
             self.readingProgressLabel.text = "\(percentage)%"
 
             if let thumbnailURL = imageURL {
-                self.imageDownloadTask = Task {
+                imageDownloadTask = Task {
                     do {
                         let image = try await ImagePipeline.shared.image(for: thumbnailURL)
-
-                        await MainActor.run {
+                        if !Task.isCancelled {
                             self.coverImageView.image = image
                         }
-                    } catch let error as CancellationError {
-                        Logger.info(error)
                     } catch {
                         Logger.error(error)
                     }
