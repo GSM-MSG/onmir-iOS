@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788" systemVersion="24E263" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="Book" representedClassName="Book" isAbstract="YES" syncable="YES">
         <attribute name="author" attributeType="String" defaultValueString=""/>
-        <attribute name="book_cover_url" optional="YES" attributeType="URI"/>
-        <attribute name="id" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="quotes" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="read_type" optional="YES" attributeType="Transformable" customClassName="ReadType"/>
+        <attribute name="book_cover_url" attributeType="URI"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="quotes" optional="YES" attributeType="Transformable" valueTransformerName="[String]"/>
+        <attribute name="rating" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="read_type" attributeType="Transformable" customClassName="ReadType"/>
         <attribute name="title" attributeType="String"/>
-        <attribute name="total_read_time" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="total_read_time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="readingRecord" optional="YES" transient="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReadingRecord"/>
     </entity>
     <entity name="ReadingRecord" representedClassName="ReadingRecord" isAbstract="YES" syncable="YES" codeGenerationType="class">

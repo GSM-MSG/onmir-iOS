@@ -1,29 +1,72 @@
-import Foundation
+import UIKit
 import CoreData
 
 @MainActor
-final class CoreDataManager {
-    static let shared = CoreDataManager()
+class CoreDataManager {
+    static let coreDataManager = CoreDataManager()
 
-    let container: NSPersistentContainer
-    let context: NSManagedObjectContext
+    private init() {}
 
-    private init() {
-        container = NSPersistentContainer(name: "CoreDataContainer")
-        container.loadPersistentStores { description, error in
-            if let error = error {
-                print("Error loading Core Data: \(error)")
+    lazy var persistentContainer: NSPersistentContainer = {
+            let container = NSPersistentContainer(name: "Profile")
+            container.loadPersistentStores { storeDescription, error in
+                if let error = error as NSError? {
+                    print("Unresolved error: \(error)")
+                }
             }
+            return container
+        }()
+
+    var context: NSManagedObjectContext { return self.persistentContainer.viewContext }
+
+    func saveBook(book: Book) -> Bool {
+        let entity = NSEntityDescription.entity(forEntityName: "Book", in: self.context)
+
+        if let entity = entity {
+            let manageObject = NSManagedObject(entity: entity, insertInto: self.context)
+            manageObject.setValue(book.title, forKey: "title")
+            manageObject.setValue(book.author, forKey: "author")
+            manageObject.setValue(book.book_cover_url, forKey: "book_cover_url")
+            manageObject.setValue(book.id, forKey: "id")
+            manageObject.setValue(book.quotes, forKey: "quetes")
+            manageObject.setValue(book.rating, forKey: "rating")
+            manageObject.setValue(book.readType, forKey: "readType")
+            manageObject.setValue(book.total_read_time, forKey: "total_read_time")
+
+            do {
+                try self.context.save()
+                print("저장완료! \(manageObject)")
+                return true
+            } catch let error {
+                print(error)
+                return false
+            }
+        } else {
+            return false
         }
-        context = container.viewContext
     }
 
-    func save() {
+    func fetchBook() -> [NSManagedObject] {
+        let bookFetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Book")
+        
         do {
-            try context.save()
-            print("성 ~ 공")
-        } catch let error {
-            print("실 ~ 패 \(error)")
+            let fetchResult = try self.context.fetch(bookFetchRequest)
+            return fetchResult
+        } catch {
+            print("책 불러오기 실패 우우ㅠ")
+            return []
+        }
+    }
+
+    func deleteBook(object: NSManagedObject) -> Bool {
+        self.context.delete(object)
+
+        do {
+            try self.context.save()
+            return true
+        } catch {
+            print("책 삭제 실패")
+            return false
         }
     }
 }
