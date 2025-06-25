@@ -1,5 +1,6 @@
 import SnapKit
 import UIKit
+import CoreData
 
 public final class HomeViewController: UIViewController {
     private let bookListSectionRowView: BookListSectionRowView = {

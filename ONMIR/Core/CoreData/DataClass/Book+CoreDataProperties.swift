@@ -2,7 +2,7 @@
 //  Book+CoreDataProperties.swift
 //  ONMIR
 //
-//  Created by 정윤서 on 5/18/25.
+//  Created by 정윤서 on 6/23/25.
 //
 //
 
@@ -16,15 +16,24 @@ extension Book {
         return NSFetchRequest<Book>(entityName: "Book")
     }
 
-    @NSManaged public var author: String
-    @NSManaged public var book_cover_url: URL
-    @NSManaged public var id: String
-    @NSManaged public var quotes: [String]
+    @NSManaged public var author: String?
+    @NSManaged public var book_cover_url: String?
+    @NSManaged public var id: Int16
+    @NSManaged public var quotes: NSObject?
     @NSManaged public var rating: Double
-    @NSManaged fileprivate var read_type: String
-    @NSManaged public var title: String
-    @NSManaged public var total_read_time: Date
+    @NSManaged private var read_type: String
+    @NSManaged public var title: String?
+    @NSManaged public var total_read_time: Date?
     @NSManaged public var readingRecord: NSSet?
+
+    public var readType: ReadType {
+        get {
+            return ReadType(rawValue: read_type)!
+        }
+        set {
+            read_type = newValue.rawValue
+        }
+    }
 
 }
 
@@ -32,10 +41,10 @@ extension Book {
 extension Book {
 
     @objc(addReadingRecordObject:)
-    @NSManaged public func addToReadingRecord(_ value: ReadingRecord)
+    @NSManaged public func addToReadingRecord(_ value: String)
 
     @objc(removeReadingRecordObject:)
-    @NSManaged public func removeFromReadingRecord(_ value: ReadingRecord)
+    @NSManaged public func removeFromReadingRecord(_ value: String)
 
     @objc(addReadingRecord:)
     @NSManaged public func addToReadingRecord(_ values: NSSet)
@@ -43,13 +52,6 @@ extension Book {
     @objc(removeReadingRecord:)
     @NSManaged public func removeFromReadingRecord(_ values: NSSet)
 
-    var readType: ReadType {
-        get {
-            return ReadType(rawValue: self.read_type) ?? .toRead
-        } set {
-            read_type = newValue.rawValue
-        }
-    }
 }
 
 extension Book : Identifiable {
