@@ -16,13 +16,13 @@ extension Book {
         return NSFetchRequest<Book>(entityName: "Book")
     }
 
-    @NSManaged public var author: String?
-    @NSManaged public var book_cover_url: String?
+    @NSManaged public var author: String
+    @NSManaged public var book_cover_url: String
     @NSManaged public var id: Int16
-    @NSManaged public var quotes: NSObject?
+    @NSManaged public var quotes: [String]
     @NSManaged public var rating: Double
     @NSManaged private var read_type: String
-    @NSManaged public var title: String?
+    @NSManaged public var title: String
     @NSManaged public var total_read_time: Date?
     @NSManaged public var readingRecord: NSSet?
 

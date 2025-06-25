@@ -69,8 +69,4 @@ class CoreDataManager {
             return false
         }
     }
-
-//    func fetchReadingRecord() -> [ReadingRecord] {
-//        let entity = NSEntityDescription.entity(forEntityName: "ReadingRecord", in: self.context)
-//    }
 }

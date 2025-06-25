@@ -11,7 +11,7 @@
         <attribute name="total_read_time" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="readingRecord" optional="YES" transient="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ReadingRecord"/>
     </entity>
-    <entity name="ReadingRecord" representedClassName="ReadingRecord" isAbstract="YES" syncable="YES" codeGenerationType="class">
+    <entity name="ReadingRecord" representedClassName="ReadingRecord" isAbstract="YES" syncable="YES" codeGenerationType="category">
         <attribute name="id" attributeType="String"/>
         <attribute name="read_date" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="read_note" attributeType="String"/>

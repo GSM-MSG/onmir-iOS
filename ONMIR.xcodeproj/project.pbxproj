@@ -15,9 +15,6 @@
 		46EE6A232DC196D9001736D6 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 46EE6A222DC196D9001736D6 /* Nuke */; };
 		D08A69332DC851130022DA0F /* OnmirModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D08A69312DC851130022DA0F /* OnmirModel.xcdatamodeld */; };
 		D0B5E3382E09799B00D9426D /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5E3352E09799B00D9426D /* Book+CoreDataProperties.swift */; };
-		D0B5E3392E09799B00D9426D /* ReadingRecord+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5E3362E09799B00D9426D /* ReadingRecord+CoreDataClass.swift */; };
-		D0B5E33A2E09799B00D9426D /* ReadingRecord+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5E3372E09799B00D9426D /* ReadingRecord+CoreDataProperties.swift */; };
-		D0B5E33B2E09799B00D9426D /* Book+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5E3342E09799B00D9426D /* Book+CoreDataClass.swift */; };
 		D0FD53152DB4DDC400F2593B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D0FD53142DB4DDC400F2593B /* .gitignore */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +51,7 @@
 		D011D32B2DB4DAAD00412C5C /* Exceptions for "ONMIR" folder in "ONMIR" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Core/CoreData/DataClass/Book+CoreDataProperties.swift",
 				Info.plist,
 			);
 			target = D011D3022DB4DAAB00412C5C /* ONMIR */;
@@ -319,9 +317,6 @@
 			files = (
 				D08A69332DC851130022DA0F /* OnmirModel.xcdatamodeld in Sources */,
 				D0B5E3382E09799B00D9426D /* Book+CoreDataProperties.swift in Sources */,
-				D0B5E3392E09799B00D9426D /* ReadingRecord+CoreDataClass.swift in Sources */,
-				D0B5E33A2E09799B00D9426D /* ReadingRecord+CoreDataProperties.swift in Sources */,
-				D0B5E33B2E09799B00D9426D /* Book+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
