@@ -13,8 +13,6 @@
 		460F8D522DC77402003F019A /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 460F8D512DC77402003F019A /* FirebaseRemoteConfig */; };
 		46EE698D2DC10341001736D6 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 46EE698C2DC10341001736D6 /* SnapKit */; };
 		46EE6A232DC196D9001736D6 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 46EE6A222DC196D9001736D6 /* Nuke */; };
-		D08A69332DC851130022DA0F /* OnmirModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D08A69312DC851130022DA0F /* OnmirModel.xcdatamodeld */; };
-		D0B5E3382E09799B00D9426D /* Book+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0B5E3352E09799B00D9426D /* Book+CoreDataProperties.swift */; };
 		D0FD53152DB4DDC400F2593B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = D0FD53142DB4DDC400F2593B /* .gitignore */; };
 /* End PBXBuildFile section */
 
@@ -39,11 +37,6 @@
 		D011D3032DB4DAAB00412C5C /* ONMIR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ONMIR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D011D3192DB4DAAD00412C5C /* ONMIRTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ONMIRTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D011D3232DB4DAAD00412C5C /* ONMIRUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ONMIRUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D08A69322DC851130022DA0F /* OnmirModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = OnmirModel.xcdatamodel; sourceTree = "<group>"; };
-		D0B5E3342E09799B00D9426D /* Book+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Book+CoreDataClass.swift"; path = "ONMIR/Core/CoreData/DataClass/Book+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D0B5E3352E09799B00D9426D /* Book+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Book+CoreDataProperties.swift"; path = "ONMIR/Core/CoreData/DataClass/Book+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		D0B5E3362E09799B00D9426D /* ReadingRecord+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ReadingRecord+CoreDataClass.swift"; path = "ONMIR/Core/CoreData/DataClass/ReadingRecord+CoreDataClass.swift"; sourceTree = "<group>"; };
-		D0B5E3372E09799B00D9426D /* ReadingRecord+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "ReadingRecord+CoreDataProperties.swift"; path = "ONMIR/Core/CoreData/DataClass/ReadingRecord+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		D0FD53142DB4DDC400F2593B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -51,7 +44,6 @@
 		D011D32B2DB4DAAD00412C5C /* Exceptions for "ONMIR" folder in "ONMIR" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Core/CoreData/DataClass/Book+CoreDataProperties.swift",
 				Info.plist,
 			);
 			target = D011D3022DB4DAAB00412C5C /* ONMIR */;
@@ -113,11 +105,6 @@
 		D011D2FA2DB4DAAB00412C5C = {
 			isa = PBXGroup;
 			children = (
-				D0B5E3342E09799B00D9426D /* Book+CoreDataClass.swift */,
-				D0B5E3352E09799B00D9426D /* Book+CoreDataProperties.swift */,
-				D0B5E3362E09799B00D9426D /* ReadingRecord+CoreDataClass.swift */,
-				D0B5E3372E09799B00D9426D /* ReadingRecord+CoreDataProperties.swift */,
-				D08A69312DC851130022DA0F /* OnmirModel.xcdatamodeld */,
 				D0FD53142DB4DDC400F2593B /* .gitignore */,
 				D011D3052DB4DAAB00412C5C /* ONMIR */,
 				D011D31C2DB4DAAD00412C5C /* ONMIRTests */,
@@ -315,8 +302,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D08A69332DC851130022DA0F /* OnmirModel.xcdatamodeld in Sources */,
-				D0B5E3382E09799B00D9426D /* Book+CoreDataProperties.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,8 +340,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ONMIR/ONMIR.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 235C2RVZ7L;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ONMIR/Info.plist;
@@ -370,8 +358,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.msg.onmir;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msg.booktracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -383,8 +372,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ONMIR/ONMIR.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 235C2RVZ7L;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ONMIR/Info.plist;
@@ -398,7 +389,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.msg.onmir;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msg.booktracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -693,19 +684,6 @@
 			productName = Nuke;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		D08A69312DC851130022DA0F /* OnmirModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				D08A69322DC851130022DA0F /* OnmirModel.xcdatamodel */,
-			);
-			currentVersion = D08A69322DC851130022DA0F /* OnmirModel.xcdatamodel */;
-			path = OnmirModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = D011D2FB2DB4DAAB00412C5C /* Project object */;
 }

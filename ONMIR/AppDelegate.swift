@@ -15,7 +15,10 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     didFinishLaunchingWithOptions launchOptions: [UIApplication
       .LaunchOptionsKey: Any]?
   ) -> Bool {
+    initializeCoreDataStack()
+
     FirebaseApp.configure()
+    
     return true
   }
 
@@ -43,4 +46,13 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
   }
 
+  private func initializeCoreDataStack() {
+    let bookSourceValueTransformer = BookSourceTypeValueTransformer()
+    ValueTransformer.setValueTransformer(bookSourceValueTransformer, forName: BookSourceTypeValueTransformer.name)
+
+    let bookStatusValueTransformer = BookStatusValueTransformer()
+    ValueTransformer.setValueTransformer(bookStatusValueTransformer, forName: BookStatusValueTransformer.name)
+
+    _ = ContextManager.shared
+  }
 }
