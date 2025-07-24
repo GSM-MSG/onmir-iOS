@@ -17,8 +17,8 @@
 - title: String
 
 Relationships:
-- logs: [ReadingLogEntity]
-- quotes: [QuoteEntity]
+- logs: [ReadingLogEntity] - Cascade
+- quotes: [QuoteEntity] - Cascade
 
 ### QuoteEntity
 - content: String
