@@ -148,7 +148,7 @@ extension ContextManager {
         forSecurityApplicationGroupIdentifier: Constants.appGroup
       )
     else {
-      fatalError()
+      fatalError("Unable to find container for app group: \(Constants.appGroup)")
     }
     return fileContainer
   }
