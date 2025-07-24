@@ -20,9 +20,7 @@ public final class ContextManager: CoreDataStack, Sendable {
   public static let shared: ContextManager = {
     ContextManager(
       modelName: Constants.databaseName,
-      store: FileManager.default.containerURL(
-        forSecurityApplicationGroupIdentifier: Constants.appGroup
-      )!
+      store: Self.storeURL()
     )
   }()
 
