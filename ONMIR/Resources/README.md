@@ -8,12 +8,12 @@
 - isbn: String
 - isbn13: String
 - originalBookID: String
-- source: String
+- source: BookSourceTypeKind
 - pageCount: Int64
 - publishedDate: Date
 - publisher: String
 - rating: Double
-- status: ReadingStatus
+- status: BookStatusTypeKind
 - title: String
 
 Relationships:
