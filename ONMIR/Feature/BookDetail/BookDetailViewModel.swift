@@ -1,6 +1,7 @@
-import Foundation
-import CoreData
+import Accelerate
 import Combine
+import CoreData
+import Foundation
 
 @MainActor
 final class BookDetailViewModel: ObservableObject {
@@ -45,18 +46,34 @@ final class BookDetailViewModel: ObservableObject {
   
   private func loadReadingLogs(for book: BookEntity) async {
     let sortedLogs = await book.managedObjectContext?.perform { @Sendable in
-      let logs = book.logs?.allObjects as? [ReadingLogEntity] ?? []
-      return logs.sorted { ($0.startPage) > ($1.startPage) }
+      let request: NSFetchRequest<ReadingLogEntity> = ReadingLogEntity.fetchRequest()
+      request.predicate = NSPredicate(format: "book == %@", book)
+      request.sortDescriptors = [NSSortDescriptor(keyPath: \ReadingLogEntity.startPage, ascending: false)]
+      request.fetchLimit = 3
+      
+      do {
+        return try book.managedObjectContext?.fetch(request) ?? []
+      } catch {
+        return []
+      }
     }
-    recentReadingLogs = Array((sortedLogs ?? []).prefix(3))
+    recentReadingLogs = sortedLogs ?? []
   }
   
   private func loadQuotes(for book: BookEntity) async {
     let sortedQuotes = await book.managedObjectContext?.perform { @Sendable in
-      let quotes = book.quotes?.allObjects as? [QuoteEntity] ?? []
-      return quotes.sorted { ($0.page) > ($1.page) }
+      let request: NSFetchRequest<QuoteEntity> = QuoteEntity.fetchRequest()
+      request.predicate = NSPredicate(format: "book == %@", book)
+      request.sortDescriptors = [NSSortDescriptor(keyPath: \QuoteEntity.page, ascending: false)]
+      request.fetchLimit = 5
+      
+      do {
+        return try book.managedObjectContext?.fetch(request) ?? []
+      } catch {
+        return []
+      }
     }
-    recentQuotes = Array((sortedQuotes ?? []).prefix(5))
+    recentQuotes = sortedQuotes ?? []
   }
   
   private func calculateTotalReadingTime(for book: BookEntity) async {
@@ -67,7 +84,14 @@ final class BookDetailViewModel: ObservableObject {
   func hasMoreReadingLogs() -> Bool {
     guard let book else { return false }
     return book.managedObjectContext?.performAndWait {
-      return book.logs?.count ?? 0 > 3
+      let request: NSFetchRequest<ReadingLogEntity> = ReadingLogEntity.fetchRequest()
+      request.predicate = NSPredicate(format: "book == %@", book)
+      do {
+        let count = try book.managedObjectContext?.count(for: request) ?? 0
+        return count > 3
+      } catch {
+        return false
+      }
     } ?? false
   }
   
@@ -75,7 +99,14 @@ final class BookDetailViewModel: ObservableObject {
     guard let book else { return false }
 
     return book.managedObjectContext?.performAndWait {
-      return book.quotes?.count ?? 0 > 5
+      let request: NSFetchRequest<QuoteEntity> = QuoteEntity.fetchRequest()
+      request.predicate = NSPredicate(format: "book == %@", book)
+      do {
+        let count = try book.managedObjectContext?.count(for: request) ?? 0
+        return count > 5
+      } catch {
+        return false
+      }
     } ?? false
   }
 }
