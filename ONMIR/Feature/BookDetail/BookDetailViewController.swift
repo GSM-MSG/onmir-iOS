@@ -41,6 +41,21 @@ final class BookDetailViewController: UIViewController {
     return view
   }()
 
+  private static let gradientColors = [
+    UIColor.systemBackground.withAlphaComponent(0.0),
+    UIColor.systemBackground.withAlphaComponent(0.2),
+    UIColor.systemBackground.withAlphaComponent(0.2),
+    UIColor.systemBackground.withAlphaComponent(1.0),
+  ]
+  private let gradientLayer = {
+    let gradientLayer = CAGradientLayer()
+    let colors = BookDetailViewController.gradientColors
+    gradientLayer.colors = colors.map(\.cgColor)
+    gradientLayer.locations = [0.0, 0.52, 0.52, 1.0]
+    gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+    gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+    return gradientLayer
+  }()
   private let gradientView = UIView()
 
   private lazy var collectionView: UICollectionView = {
@@ -73,6 +88,20 @@ final class BookDetailViewController: UIViewController {
     setupUI()
     startStateObserving()
     viewModel.loadBook(with: bookObjectID)
+
+    registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (traitEnvironment: Self, previousTraitCollection) in
+      if previousTraitCollection.userInterfaceStyle != traitEnvironment.traitCollection.userInterfaceStyle {
+        traitEnvironment.gradientLayer.colors = Self.gradientColors.map(\.cgColor)
+      }
+    }
+  }
+
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+
+    let colors = Self.gradientColors
+    gradientLayer.colors = colors.map(\.cgColor)
+    gradientLayer.frame = gradientView.bounds
   }
 
   private func setupUI() {
@@ -115,37 +144,8 @@ final class BookDetailViewController: UIViewController {
   }
 
   private func setupGradientLayer() {
-    let gradientLayer = CAGradientLayer()
-    let colors = [
-      UIColor.systemBackground.withAlphaComponent(0.0),
-      UIColor.systemBackground.withAlphaComponent(0.2),
-      UIColor.systemBackground.withAlphaComponent(0.2),
-      UIColor.systemBackground.withAlphaComponent(1.0),
-    ]
-    gradientLayer.colors = colors.map(\.cgColor)
-    gradientLayer.locations = [0.0, 0.52, 0.52, 1.0]
-    gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
-    gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
-
     gradientView.layer.addSublayer(gradientLayer)
     gradientLayer.frame = self.gradientView.bounds
-  }
-
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
-
-    if let gradientLayer = gradientView.layer.sublayers?.first
-      as? CAGradientLayer
-    {
-      let colors = [
-        UIColor.systemBackground.withAlphaComponent(0.0),
-        UIColor.systemBackground.withAlphaComponent(0.2),
-        UIColor.systemBackground.withAlphaComponent(0.2),
-        UIColor.systemBackground.withAlphaComponent(1.0),
-      ]
-      gradientLayer.colors = colors.map(\.cgColor)
-      gradientLayer.frame = gradientView.bounds
-    }
   }
 
   private func startStateObserving() {
