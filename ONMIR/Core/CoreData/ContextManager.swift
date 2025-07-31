@@ -100,7 +100,9 @@ extension ContextManager {
 
     os.Logger.contextManager.debug("\(sqliteURL)")
     let storeDescription = NSPersistentStoreDescription(url: sqliteURL)
-    // storeDescription.url = Constants.inMemoryStoreURL
+#if DEBUG
+    storeDescription.url = Constants.inMemoryStoreURL
+#endif
     storeDescription.type = NSSQLiteStoreType
     storeDescription.setOption(
       stagedMigrationFactory.create(),

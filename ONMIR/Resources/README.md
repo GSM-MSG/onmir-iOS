@@ -32,6 +32,7 @@ Relationships:
 - endPage: Int64
 - note: String
 - readingSeconds: Double
+- date: Date
 
 Relationships:
 - book: BookEntity
