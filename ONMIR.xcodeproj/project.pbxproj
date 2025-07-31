@@ -45,8 +45,6 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				"Support/Firebase/Production/GoogleService-release-Info.plist",
-				"Support/Firebase/Staging/GoogleService-staging-Info.plist",
 			);
 			target = D011D3022DB4DAAB00412C5C /* ONMIR */;
 		};
@@ -136,7 +134,6 @@
 				D011D3002DB4DAAB00412C5C /* Frameworks */,
 				460F8D5B2DC77850003F019A /* Firebase Info configure */,
 				D011D3012DB4DAAB00412C5C /* Resources */,
-				462108A92DCF8B4200E9A1F2 /* Firebase Crashlytics */,
 			);
 			buildRules = (
 			);
@@ -298,30 +295,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\nGOOGLESERVICE_INFO_STAGING=\"${PROJECT_DIR}/${TARGET_NAME}/Support/Firebase/Staging/GoogleService-staging-Info.plist\"\nGOOGLESERVICE_INFO_PROD=\"${PROJECT_DIR}/${TARGET_NAME}/Support/Firebase/Production/GoogleService-release-Info.plist\"\n\necho \"${PROJECT_DIR}\"\n\necho \"${CONFIGURATION}\"\nif [ \"${CONFIGURATION}\" == \"Debug\" ]; then\n  cp \"${GOOGLESERVICE_INFO_STAGING}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nelif [ \"${CONFIGURATION}\" == \"Release\" ]; then\n  cp \"${GOOGLESERVICE_INFO_PROD}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\"\nelse\n    echo \"Error: Invalid Build Configuration. Expected 'Debug' or 'Release'.\"\n    exit 1\nfi\n\n";
 		};
-		462108A92DCF8B4200E9A1F2 /* Firebase Crashlytics */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
-				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
-				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
-				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
-			);
-			name = "Firebase Crashlytics";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${BUILD_DIR%Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -367,8 +340,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ONMIR/ONMIR.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 235C2RVZ7L;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ONMIR/Info.plist;
@@ -382,8 +358,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.msg.onmir;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msg.booktracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -395,8 +372,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ONMIR/ONMIR.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 235C2RVZ7L;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ONMIR/Info.plist;
@@ -410,7 +389,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.msg.onmir;
+				PRODUCT_BUNDLE_IDENTIFIER = com.msg.booktracker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;

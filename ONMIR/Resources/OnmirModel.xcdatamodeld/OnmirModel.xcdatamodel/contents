@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="BookEntity" representedClassName="BookEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="author" optional="YES" attributeType="String" defaultValueString=""/>
+        <attribute name="coverImageURL" optional="YES" attributeType="URI"/>
+        <attribute name="isbn" optional="YES" attributeType="String"/>
+        <attribute name="isbn13" optional="YES" attributeType="String"/>
+        <attribute name="originalBookID" optional="YES" attributeType="String"/>
+        <attribute name="pageCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="publishedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="publisher" optional="YES" attributeType="String"/>
+        <attribute name="rating" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="source" optional="YES" attributeType="Transformable" valueTransformerName="BookSourceTypeValueTransformer" customClassName="BookSourceTypeKind"/>
+        <attribute name="status" optional="YES" attributeType="Transformable" valueTransformerName="BookStatusValueTransformer" customClassName="BookStatusTypeKind"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="logs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReadingLogEntity" inverseName="book" inverseEntity="ReadingLogEntity"/>
+        <relationship name="quotes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="QuoteEntity" inverseName="book" inverseEntity="QuoteEntity"/>
+    </entity>
+    <entity name="QuoteEntity" representedClassName="QuoteEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="content" optional="YES" attributeType="String"/>
+        <attribute name="page" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BookEntity" inverseName="quotes" inverseEntity="BookEntity"/>
+    </entity>
+    <entity name="ReadingLogEntity" representedClassName="ReadingLogEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="endPage" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <attribute name="readingSeconds" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="startPage" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BookEntity" inverseName="logs" inverseEntity="BookEntity"/>
+    </entity>
+</model>
