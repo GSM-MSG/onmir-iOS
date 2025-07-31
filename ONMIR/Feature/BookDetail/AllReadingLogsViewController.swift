@@ -81,7 +81,9 @@ final class AllReadingLogsViewController: UIViewController {
     let context = ContextManager.shared.mainContext
     
     guard let book = context.object(with: bookObjectID) as? BookEntity else {
-      fatalError("Failed to load book entity")
+      assertionFailure("Book not found")
+      self.dismiss(animated: true)
+      return .init()
     }
     
     let request: NSFetchRequest<ReadingLogEntity> = ReadingLogEntity.fetchRequest()
