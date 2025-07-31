@@ -228,8 +228,8 @@ final class BookDetailViewController: UIViewController {
   > {
     let bookInfoCellRegistration = UICollectionView.CellRegistration<
       BookInfoCell, BookEntity
-    > { cell, indexPath, book in
-      cell.configure(with: book)
+    > { [viewModel] cell, indexPath, book in
+      cell.configure(with: book, totalReadingTime: viewModel.totalReadingTime)
     }
 
     let readingLogCellRegistration = UICollectionView.CellRegistration<

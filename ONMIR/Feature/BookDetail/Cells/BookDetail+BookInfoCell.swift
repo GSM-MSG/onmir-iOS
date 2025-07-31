@@ -93,7 +93,6 @@ extension BookDetailViewController {
     }()
     
     private var imageLoadingTask: Task<Void, Never>?
-    private var readingTimeTask: Task<Void, Never>?
     
     private static let timeFormatter = {
       let formatter = DateComponentsFormatter()
@@ -188,7 +187,7 @@ extension BookDetailViewController {
       }
     }
     
-    func configure(with book: BookEntity) {
+    func configure(with book: BookEntity, totalReadingTime: TimeInterval) {
       titleLabel.text = book.title
       authorLabel.text = book.author
       
@@ -212,29 +211,16 @@ extension BookDetailViewController {
       }
       
       updateRatingInfo(rating: book.rating)
-      updateTotalReadingTime(for: book)
+      updateTotalReadingTime(for: book, totalReadingTime: totalReadingTime)
     }
     
     private func updateRatingInfo(rating: Double) {
       ratingLabel.text = String(format: "%.1f", rating)
     }
     
-    private func updateTotalReadingTime(for book: BookEntity) {
-      readingTimeTask?.cancel()
-      readingTimeTask = Task {
-        let bookReadingTime = await book.managedObjectContext?.perform { @Sendable in
-          let logs = book.logs?.allObjects as? [ReadingLogEntity] ?? []
-          let totalSeconds = vDSP.sum(logs.map(\.readingSeconds))
-          return totalSeconds
-        }
-        guard Task.isCancelled == false else { return }
-
-        let timeText = Self.timeFormatter.string(from: bookReadingTime ?? 0) ?? "0m"
-
-        await MainActor.run {
-          self.timeLabel.text = timeText
-        }
-      }
+    private func updateTotalReadingTime(for book: BookEntity, totalReadingTime: TimeInterval) {
+      let timeText = Self.timeFormatter.string(from: totalReadingTime) ?? "0m"
+      self.timeLabel.text = timeText
     }
   }
 }
