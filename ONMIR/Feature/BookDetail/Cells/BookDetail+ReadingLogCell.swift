@@ -101,13 +101,22 @@ extension BookDetailViewController {
     }
     
     func configure(with log: ReadingLogEntity, book: BookEntity?) {
-      pageRangeLabel.text = "\(log.startPage) - \(log.endPage)"
-      
-      let currentDate = Date()
-      let formattedDate = currentDate.formatted(.dateTime.year().month().day())
+      let pageText = log.managedObjectContext?.performAndWait { @Sendable in
+        "\(log.startPage) - \(log.endPage)"
+      }
+      pageRangeLabel.text = pageText
+
+      let pageDateText = log.managedObjectContext?.performAndWait { @Sendable in
+        log.date?.formatted(.dateTime.year().month().day())
+      }
+
       let readingTime = Self.timeFormatter.string(from: log.readingSeconds) ?? "\(log.readingSeconds)s"
       
-      dateTimeLabel.text = "\(formattedDate) • \(readingTime)"
+      dateTimeLabel.text = if let pageDateText {
+        "\(pageDateText) • \(readingTime)"
+      } else {
+        "\(readingTime)"
+      }
       
       if let book = book, let coverURL = book.coverImageURL {
         let request = ImageRequest(url: coverURL)
