@@ -60,12 +60,10 @@ final class AllQuotesViewController: UIViewController {
         return cell
       }
       
-      context.perform {
-        cell.textLabel?.text = quote.content ?? ""
-        cell.detailTextLabel?.text = "\(quote.page) P"
-        cell.textLabel?.numberOfLines = 0
-        cell.accessoryType = .disclosureIndicator
-      }
+      cell.textLabel?.text = quote.managedObjectContext?.performAndWait { quote.content } ?? ""
+      cell.detailTextLabel?.text = quote.managedObjectContext?.performAndWait { "\(quote.page) P" } ?? ""
+      cell.textLabel?.numberOfLines = 0
+      cell.accessoryType = .disclosureIndicator
       
       return cell
     }

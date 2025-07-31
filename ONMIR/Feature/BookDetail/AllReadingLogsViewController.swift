@@ -64,11 +64,9 @@ final class AllReadingLogsViewController: UIViewController {
         return cell
       }
       
-      context.perform {
-        cell.textLabel?.text = "\(log.startPage) - \(log.endPage)"
-        cell.detailTextLabel?.text = Self.timeFormatter.string(from: log.readingSeconds)
-        cell.accessoryType = .disclosureIndicator
-      }
+      cell.textLabel?.text = log.managedObjectContext?.performAndWait { "\(log.startPage) - \(log.endPage)" } ?? ""
+      cell.detailTextLabel?.text = log.managedObjectContext?.performAndWait { Self.timeFormatter.string(from: log.readingSeconds) } ?? ""
+      cell.accessoryType = .disclosureIndicator
       
       return cell
     }
