@@ -117,7 +117,7 @@ enum BookDetailError: Error, LocalizedError {
   var errorDescription: String? {
     switch self {
     case .bookNotFound:
-      return "Cannot found book"
+      return "Cannot find book"
     }
   }
 }
