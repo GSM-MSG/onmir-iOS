@@ -2,16 +2,18 @@ import Nuke
 import SnapKit
 import UIKit
 
-public final class NewBookRecordViewController: UIViewController {
+public final class BookRecordEditorViewController: UIViewController {
   enum Section: Int, CaseIterable {
     case bookInfo
+    case date
     case readingProgress
     case readingTime
     case note
   }
 
   enum Item: Hashable {
-    case bookInfo(BookRepresentation)
+    case bookInfo(BookEntity)
+    case date
     case readingProgress
     case readingTime
     case note
@@ -36,9 +38,9 @@ public final class NewBookRecordViewController: UIViewController {
   }()
 
   private lazy var dataSource: UICollectionViewDiffableDataSource<Section, Item> = makeDataSource()
-  private let viewModel: NewBookRecordViewModel
+  private let viewModel: BookRecordEditorViewModel
 
-  init(viewModel: NewBookRecordViewModel) {
+  init(viewModel: BookRecordEditorViewModel) {
     self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }
@@ -51,16 +53,31 @@ public final class NewBookRecordViewController: UIViewController {
     super.viewDidLoad()
     setupNavigationBar()
     setupLayout()
+    setupBinding()
     applySnapshot()
+    setupPresentationController()
+  }
+  
+  private func setupPresentationController() {
+    if let presentationController = presentationController as? UISheetPresentationController {
+      presentationController.delegate = self
+    }
   }
 
   private func setupNavigationBar() {
-    title = "New Record"
+    switch viewModel.editMode {
+    case .create:
+      title = "New Log"
+    case .edit:
+      title = "Edit Log"
+    }
+    
     navigationItem.leftBarButtonItem = UIBarButtonItem(
-      title: "Cancel",
+      systemItem: .close,
       primaryAction: UIAction(handler: { [weak self] _ in
         self?.cancelButtonTapped()
-      })
+      }),
+      menu: nil
     )
   }
 
@@ -81,7 +98,7 @@ public final class NewBookRecordViewController: UIViewController {
 
     collectionView.snp.makeConstraints { make in
       make.top.leading.trailing.equalToSuperview()
-      make.bottom.equalTo(doneButton.snp.top).offset(-20)
+      make.bottom.equalTo(doneButton.snp.top).offset(-8)
     }
 
     doneButton.snp.makeConstraints { make in
@@ -103,6 +120,8 @@ public final class NewBookRecordViewController: UIViewController {
       switch section {
       case .bookInfo:
         return createBookInfoSection()
+      case .date:
+        return createDateSection()
       case .readingProgress:
         return createReadingProgressSection()
       case .readingTime:
@@ -141,16 +160,38 @@ public final class NewBookRecordViewController: UIViewController {
     return section
   }
 
-  private func createReadingProgressSection() -> NSCollectionLayoutSection {
+  private func createDateSection() -> NSCollectionLayoutSection {
     let itemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1.0),
-      heightDimension: .estimated(150)
+      heightDimension: .estimated(80)
     )
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
     let groupSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1.0),
-      heightDimension: .estimated(150)
+      heightDimension: .estimated(80)
+    )
+    let group = NSCollectionLayoutGroup.horizontal(
+      layoutSize: groupSize, subitems: [item])
+
+    let section = NSCollectionLayoutSection(group: group)
+    section.contentInsets = NSDirectionalEdgeInsets(
+      top: 10, leading: 20, bottom: 0, trailing: 20
+    )
+
+    return section
+  }
+
+  private func createReadingProgressSection() -> NSCollectionLayoutSection {
+    let itemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1.0),
+      heightDimension: .estimated(100)
+    )
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1.0),
+      heightDimension: .estimated(100)
     )
     let group = NSCollectionLayoutGroup.horizontal(
       layoutSize: groupSize, subitems: [item])
@@ -211,20 +252,34 @@ public final class NewBookRecordViewController: UIViewController {
 
   private func makeDataSource() -> UICollectionViewDiffableDataSource<Section, Item> {
     let bookInfoCellRegistration = UICollectionView.CellRegistration<
-      BookInfoCell, BookRepresentation
+      BookInfoCell, BookEntity
     > { cell, _, book in
       cell.configure(with: book)
     }
 
+    let dateCellRegistration = UICollectionView.CellRegistration<
+      DateCell, Item
+    > { [viewModel] cell, _, _ in
+      cell.configure(
+        title: "Date",
+        date: viewModel.date,
+        dateChangedHandler: { date in
+          viewModel.date = date
+        }
+      )
+    }
+
     let readingProgressCellRegistration = UICollectionView.CellRegistration<
-      ReadingProgressCell, Item
+      ReadingRangeCell, Item
     > { [viewModel] cell, _, _ in
       cell.configure(
         title: "Reading Progress",
-        currentPage: viewModel.currentPage,
+        startPage: viewModel.startPage,
+        endPage: viewModel.currentPage,
         totalPages: viewModel.totalPages,
-        valueChangedHandler: { value in
-          viewModel.currentPage = value
+        rangeChangedHandler: { startPage, endPage in
+          viewModel.startPage = startPage
+          viewModel.currentPage = endPage
         }
       )
     }
@@ -262,6 +317,12 @@ public final class NewBookRecordViewController: UIViewController {
           for: indexPath,
           item: book
         )
+      case .date:
+        return collectionView.dequeueConfiguredReusableCell(
+          using: dateCellRegistration,
+          for: indexPath,
+          item: item
+        )
       case .readingProgress:
         return collectionView.dequeueConfiguredReusableCell(
           using: readingProgressCellRegistration,
@@ -289,6 +350,7 @@ public final class NewBookRecordViewController: UIViewController {
     snapshot.appendSections(Section.allCases)
 
     snapshot.appendItems([.bookInfo(viewModel.book)], toSection: .bookInfo)
+    snapshot.appendItems([.date], toSection: .date)
     snapshot.appendItems([.readingProgress], toSection: .readingProgress)
     snapshot.appendItems([.readingTime], toSection: .readingTime)
     snapshot.appendItems([.note], toSection: .note)
@@ -297,7 +359,37 @@ public final class NewBookRecordViewController: UIViewController {
   }
 
   private func cancelButtonTapped() {
-    dismiss(animated: true)
+    if viewModel.hasChanges {
+      showDiscardChangesAlert()
+    } else {
+      dismiss(animated: true)
+    }
+  }
+  
+  private func showDiscardChangesAlert() {
+    let alert = UIAlertController(
+      title: "Discard Changes?",
+      message: "Are you sure you want to discard your changes?",
+      preferredStyle: .alert
+    )
+    alert.popoverPresentationController?.sourceItem = navigationItem.leftBarButtonItem
+    
+    let discardAction = UIAlertAction(
+      title:"Discard",
+      style: .destructive
+    ) { [weak self] _ in
+      self?.dismiss(animated: true)
+    }
+    
+    let cancelAction = UIAlertAction(
+      title: "Cancel",
+      style: .cancel
+    )
+    
+    alert.addAction(discardAction)
+    alert.addAction(cancelAction)
+    
+    present(alert, animated: true)
   }
 
   private func doneButtonTapped() {
@@ -309,4 +401,65 @@ public final class NewBookRecordViewController: UIViewController {
       }
     }
   }
+}
+
+extension BookRecordEditorViewController: UISheetPresentationControllerDelegate {
+  public func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+    return !viewModel.hasChanges
+  }
+  
+  public func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+    showDiscardChangesAlert()
+  }
+}
+
+#Preview("Create Mode") {
+  {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    
+    let sampleBook = BookEntity(context: ContextManager.shared.mainContext)
+    sampleBook.originalBookID = "sample-book-id"
+    sampleBook.title = "Advanced Apple Debugging & Reverse Engineering"
+    sampleBook.author = "Derek Selander, Walter Tyree"
+    sampleBook.isbn = "1942878842"
+    sampleBook.isbn13 = "9781942878841"
+    sampleBook.pageCount = 586
+    sampleBook.publishedDate = dateFormatter.date(from: "2024-03-15")
+    sampleBook.publisher = "Razeware LLC"
+    sampleBook.rating = 4.8
+    sampleBook.source = BookSourceTypeKind(sourceType: .googleBooks)
+    sampleBook.status = BookStatusTypeKind(status: .reading)
+    sampleBook.coverImageURL = URL(string: "https://m.media-amazon.com/images/I/619+wjNLTyL._SY522_.jpg")
+    
+    let viewModel = BookRecordEditorViewModel(book: sampleBook, editMode: .create)
+    let viewController = BookRecordEditorViewController(viewModel: viewModel)
+    return UINavigationController(rootViewController: viewController)
+  }()
+}
+
+#Preview("Edit Mode") {
+  {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    
+    let sampleBook = BookEntity(context: ContextManager.shared.mainContext)
+    sampleBook.originalBookID = "sample-book-id"
+    sampleBook.title = "Advanced Apple Debugging & Reverse Engineering"
+    sampleBook.author = "Derek Selander, Walter Tyree"
+    sampleBook.pageCount = 586
+    
+    // Create sample reading log
+    let readingLog = ReadingLogEntity(context: ContextManager.shared.mainContext)
+    readingLog.date = dateFormatter.date(from: "2024-03-10")
+    readingLog.startPage = 50
+    readingLog.endPage = 75
+    readingLog.readingSeconds = 45 * 60 // 45 minutes
+    readingLog.note = "Great chapter on advanced debugging techniques!"
+    readingLog.book = sampleBook
+    
+    let viewModel = BookRecordEditorViewModel(book: sampleBook, editMode: .edit(readingLog))
+    let viewController = BookRecordEditorViewController(viewModel: viewModel)
+    return UINavigationController(rootViewController: viewController)
+  }()
 }

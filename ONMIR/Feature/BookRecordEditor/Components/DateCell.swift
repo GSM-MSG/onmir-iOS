@@ -1,8 +1,8 @@
 import SnapKit
 import UIKit
 
-extension NewBookRecordViewController {
-  final class ReadingTimeCell: UICollectionViewCell {
+extension BookRecordEditorViewController {
+  final class DateCell: UICollectionViewCell {
     private let containerView: UIView = {
       let view = UIView()
       view.backgroundColor = .secondarySystemGroupedBackground
@@ -17,29 +17,22 @@ extension NewBookRecordViewController {
       return label
     }()
 
-    private let timeLabel: UILabel = {
+    private let dateLabel: UILabel = {
       let label = UILabel()
       label.font = .systemFont(ofSize: 14)
-      label.textColor = .label
+      label.textColor = .secondaryLabel
       return label
     }()
 
     private let datePicker: UIDatePicker = {
       let picker = UIDatePicker()
-      picker.datePickerMode = .countDownTimer
-      picker.backgroundColor = .secondarySystemGroupedBackground
-      picker.preferredDatePickerStyle = .wheels
+      picker.datePickerMode = .date
+      picker.preferredDatePickerStyle = .compact
+      picker.maximumDate = Date()
       return picker
     }()
 
-    private let dateComponentsFormatter: DateComponentsFormatter = {
-      let formatter = DateComponentsFormatter()
-      formatter.allowedUnits = [.hour, .minute]
-      formatter.unitsStyle = .abbreviated
-      return formatter
-    }()
-
-    private var durationChangedHandler: (@MainActor (TimeInterval) -> Void)?
+    private var dateChangedHandler: (@MainActor (Date) -> Void)?
 
     override init(frame: CGRect) {
       super.init(frame: frame)
@@ -52,21 +45,20 @@ extension NewBookRecordViewController {
 
     func configure(
       title: String,
-      duration: TimeInterval,
-      durationChangedHandler: @MainActor @escaping (TimeInterval) -> Void
+      date: Date,
+      dateChangedHandler: @MainActor @escaping (Date) -> Void
     ) {
       titleLabel.text = title
-      self.durationChangedHandler = durationChangedHandler
+      self.dateChangedHandler = dateChangedHandler
       
-      timeLabel.text = dateComponentsFormatter.string(from: duration)
-      
-      datePicker.countDownDuration = duration
+      dateLabel.text = date.formatted(.dateTime.year().month().day())
+      datePicker.date = date
     }
 
     private func setupView() {
       contentView.addSubview(containerView)
       containerView.addSubview(titleLabel)
-      containerView.addSubview(timeLabel)
+      containerView.addSubview(dateLabel)
       containerView.addSubview(datePicker)
 
       containerView.snp.makeConstraints { make in
@@ -74,19 +66,17 @@ extension NewBookRecordViewController {
       }
 
       titleLabel.snp.makeConstraints { make in
-        make.top.horizontalEdges.equalToSuperview().inset(16)
+        make.top.leading.equalToSuperview().inset(16)
       }
 
-      timeLabel.snp.makeConstraints { make in
-        make.top.equalTo(titleLabel.snp.bottom).offset(4)
+      dateLabel.snp.makeConstraints { make in
+        make.top.equalTo(titleLabel.snp.bottom).offset(0)
         make.leading.equalToSuperview().inset(16)
       }
 
       datePicker.snp.makeConstraints { make in
-        make.top.equalTo(timeLabel.snp.bottom).offset(8)
-        make.leading.trailing.equalToSuperview()
-        make.bottom.equalToSuperview().inset(16)
-        make.height.equalTo(160)
+        make.verticalEdges.equalToSuperview().inset(16)
+        make.trailing.equalToSuperview().inset(16)
       }
 
       datePicker.addAction(
@@ -98,12 +88,9 @@ extension NewBookRecordViewController {
     }
 
     private func datePickerValueChanged() {
-      let duration = datePicker.countDownDuration
-      let string = dateComponentsFormatter.string(from: duration)
-
-      timeLabel.text = string
-
-      durationChangedHandler?(duration)
+      let selectedDate = datePicker.date
+      dateLabel.text = selectedDate.formatted(.dateTime.year().month().day())
+      dateChangedHandler?(selectedDate)
     }
   }
 }
