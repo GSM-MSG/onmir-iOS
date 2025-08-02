@@ -41,45 +41,39 @@ public final class BookRecordEditorViewModel {
     self.contextManager = contextManager
     self.totalPages = Int(book.pageCount)
     
+    let initialDate: Date
+    let initialStartPage: Int
+    let initialCurrentPage: Int
+    let initialDuration: TimeInterval
+    let initialNote: String
+
     switch editMode {
     case .create:
-      let initialDate = Date()
-      let initialStartPage = 0
-      let initialCurrentPage = 0
-      let initialDuration = TimeInterval(60 * 5)
-      let initialNote = ""
-      
-      self.date = initialDate
-      self.startPage = initialStartPage
-      self.currentPage = initialCurrentPage
-      self.duration = initialDuration
-      self.note = initialNote
-      
-      self.originalDate = initialDate
-      self.originalStartPage = initialStartPage
-      self.originalCurrentPage = initialCurrentPage
-      self.originalDuration = initialDuration
-      self.originalNote = initialNote
-      
+      initialDate = Date()
+      initialStartPage = 0
+      initialCurrentPage = 0
+      initialDuration = TimeInterval(60 * 5)
+      initialNote = ""
+
     case .edit(let readingLog):
-      let initialDate = readingLog.date ?? Date()
-      let initialStartPage = Int(readingLog.startPage)
-      let initialCurrentPage = Int(readingLog.endPage)
-      let initialDuration = readingLog.readingSeconds
-      let initialNote = readingLog.note ?? ""
-      
-      self.date = initialDate
-      self.startPage = initialStartPage
-      self.currentPage = initialCurrentPage
-      self.duration = initialDuration
-      self.note = initialNote
-      
-      self.originalDate = initialDate
-      self.originalStartPage = initialStartPage
-      self.originalCurrentPage = initialCurrentPage
-      self.originalDuration = initialDuration
-      self.originalNote = initialNote
+      initialDate = readingLog.date ?? Date()
+      initialStartPage = Int(readingLog.startPage)
+      initialCurrentPage = Int(readingLog.endPage)
+      initialDuration = readingLog.readingSeconds
+      initialNote = readingLog.note ?? ""
     }
+
+    self.date = initialDate
+    self.startPage = initialStartPage
+    self.currentPage = initialCurrentPage
+    self.duration = initialDuration
+    self.note = initialNote
+
+    self.originalDate = initialDate
+    self.originalStartPage = initialStartPage
+    self.originalCurrentPage = initialCurrentPage
+    self.originalDuration = initialDuration
+    self.originalNote = initialNote
   }
   
   public var hasChanges: Bool {
