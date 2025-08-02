@@ -1,86 +1,79 @@
 import Foundation
 
 public struct BookRepresentation: Sendable, Hashable {
-  public let id: String
-  public let volumeInfo: VolumeInfo
-  public let saleInfo: SaleInfo?
+  // Core book properties matching BookEntity
+  public let originalBookID: String
+  public let title: String
+  public let author: String?
+  public let isbn: String?
+  public let isbn13: String?
+  public let pageCount: Int64
+  public let publishedDate: Date?
+  public let publisher: String?
+  public let rating: Double
+  public let source: BookSourceType
+  public let status: BookStatusType?
+  public let coverImageURL: URL?
 
   public init(
-    id: String,
-    volumeInfo: VolumeInfo,
-    saleInfo: SaleInfo?
+    originalBookID: String,
+    title: String,
+    author: String? = nil,
+    isbn: String? = nil,
+    isbn13: String? = nil,
+    pageCount: Int64 = 0,
+    publishedDate: Date? = nil,
+    publisher: String? = nil,
+    rating: Double = 0.0,
+    source: BookSourceType = .googleBooks,
+    status: BookStatusType? = nil,
+    coverImageURL: URL? = nil
   ) {
-    self.id = id
-    self.volumeInfo = volumeInfo
-    self.saleInfo = saleInfo
+    self.originalBookID = originalBookID
+    self.title = title
+    self.author = author
+    self.isbn = isbn
+    self.isbn13 = isbn13
+    self.pageCount = pageCount
+    self.publishedDate = publishedDate
+    self.publisher = publisher
+    self.rating = rating
+    self.source = source
+    self.status = status
+    self.coverImageURL = coverImageURL
   }
+}
 
-  public struct VolumeInfo: Sendable, Hashable {
-    public let title: String
-    public let subtitle: String?
-    public let authors: [String]?
-    public let publisher: String?
-    public let publishedDate: String?
-    public let description: String?
-    public let pageCount: Int?
-    public let categories: [String]?
-    public let language: String?
-    public let imageLinks: ImageLinks?
-
-    public init(
-      title: String,
-      subtitle: String?,
-      authors: [String]?,
-      publisher: String?,
-      publishedDate: String?,
-      description: String?,
-      pageCount: Int?,
-      categories: [String]?,
-      language: String?,
-      imageLinks: ImageLinks?
-    ) {
-      self.title = title
-      self.subtitle = subtitle
-      self.authors = authors
-      self.publisher = publisher
-      self.publishedDate = publishedDate
-      self.description = description
-      self.pageCount = pageCount
-      self.categories = categories
-      self.language = language
-      self.imageLinks = imageLinks
-    }
-
-    public struct ImageLinks: Sendable, Hashable {
-      public let smallThumbnail: String?
-      public let thumbnail: String?
-
-      public init(smallThumbnail: String?, thumbnail: String?) {
-        self.smallThumbnail = smallThumbnail
-        self.thumbnail = thumbnail
-      }
-    }
+extension BookRepresentation {
+  public init(from bookEntity: BookEntity) {
+    self.originalBookID = bookEntity.originalBookID ?? ""
+    self.title = bookEntity.title ?? ""
+    self.author = bookEntity.author
+    self.isbn = bookEntity.isbn
+    self.isbn13 = bookEntity.isbn13
+    self.pageCount = bookEntity.pageCount
+    self.publishedDate = bookEntity.publishedDate
+    self.publisher = bookEntity.publisher
+    self.rating = bookEntity.rating
+    self.source = bookEntity.source?.sourceType ?? .googleBooks
+    self.status = bookEntity.status?.status
+    self.coverImageURL = bookEntity.coverImageURL
   }
-
-  public struct SaleInfo: Sendable, Hashable {
-    public let listPrice: Price?
-    public let retailPrice: Price?
-    public let buyLink: String?
-
-    public init(listPrice: Price?, retailPrice: Price?, buyLink: String?) {
-      self.listPrice = listPrice
-      self.retailPrice = retailPrice
-      self.buyLink = buyLink
-    }
-
-    public struct Price: Sendable, Hashable {
-      public let amount: Double?
-      public let currencyCode: String?
-
-      public init(amount: Double?, currencyCode: String?) {
-        self.amount = amount
-        self.currencyCode = currencyCode
-      }
-    }
+  
+  public func toBookEntity(in context: NSManagedObjectContext) -> BookEntity {
+    let bookEntity = BookEntity(context: context)
+    bookEntity.originalBookID = originalBookID
+    bookEntity.title = title
+    bookEntity.author = author
+    bookEntity.isbn = isbn
+    bookEntity.isbn13 = isbn13
+    bookEntity.pageCount = pageCount
+    bookEntity.publishedDate = publishedDate
+    bookEntity.publisher = publisher
+    bookEntity.rating = rating
+    bookEntity.source = BookSourceTypeKind(sourceType: source)
+    bookEntity.status = status.map { BookStatusTypeKind(status: $0) }
+    bookEntity.coverImageURL = coverImageURL
+    return bookEntity
   }
 }

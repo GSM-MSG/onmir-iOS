@@ -2,7 +2,7 @@ import Nuke
 import SnapKit
 import UIKit
 
-extension NewBookRecordViewController {
+extension BookRecordEditorViewController {
   final class BookInfoCell: UICollectionViewCell {
     private let containerView: UIView = {
       let view = UIView()
@@ -14,7 +14,7 @@ extension NewBookRecordViewController {
     private let coverImageView: UIImageView = {
       let imageView = UIImageView()
       imageView.contentMode = .scaleAspectFit
-      imageView.backgroundColor = .tertiarySystemBackground
+      imageView.backgroundColor = .clear
       imageView.layer.cornerRadius = 8
       imageView.clipsToBounds = true
       return imageView
@@ -81,33 +81,27 @@ extension NewBookRecordViewController {
       
       authorsLabel.snp.makeConstraints { make in
         make.leading.equalTo(coverImageView.snp.trailing).offset(16)
-        make.top.equalTo(titleLabel.snp.bottom).offset(8)
+        make.top.equalTo(titleLabel.snp.bottom).offset(4)
         make.trailing.equalToSuperview()
       }
     }
     
-    func configure(with book: BookRepresentation) {
-      titleLabel.text = book.volumeInfo.title
+    func configure(with book: BookEntity) {
+      titleLabel.text = book.title
       
-      if let authors = book.volumeInfo.authors, !authors.isEmpty {
-        authorsLabel.text = authors.joined(separator: ", ")
+      if let authors = book.author {
+        authorsLabel.text = authors
       }
       
-      if let thumbnailURLString = book.volumeInfo.imageLinks?.thumbnail {
-        let secureURL = thumbnailURLString.replacingOccurrences(
-          of: "http://",
-          with: "https://"
-        )
-        if let thumbnailURL = URL(string: secureURL) {
-          imageLoadTask = Task {
-            do {
-              let image = try await ImagePipeline.shared.image(for: thumbnailURL)
-              if !Task.isCancelled {
-                self.coverImageView.image = image
-              }
-            } catch {
-              print("이미지 로딩 실패: \(error)")
+      if let thumbnailURL = book.coverImageURL {
+        imageLoadTask = Task {
+          do {
+            let image = try await ImagePipeline.shared.image(for: thumbnailURL)
+            if !Task.isCancelled {
+              self.coverImageView.image = image
             }
+          } catch {
+            print("이미지 로딩 실패: \(error)")
           }
         }
       }

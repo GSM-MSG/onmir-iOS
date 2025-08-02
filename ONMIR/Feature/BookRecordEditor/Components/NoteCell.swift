@@ -1,7 +1,7 @@
 import SnapKit
 import UIKit
 
-extension NewBookRecordViewController {
+extension BookRecordEditorViewController {
   final class NoteCell: UICollectionViewCell {
     private let containerView: UIView = {
       let view = UIView()
@@ -157,7 +157,7 @@ extension NewBookRecordViewController {
   }
 }
 
-extension NewBookRecordViewController.NoteCell: UITextViewDelegate {
+extension BookRecordEditorViewController.NoteCell: UITextViewDelegate {
   func textViewDidChange(_ textView: UITextView) {
     textChangedHandler?(textView.text)
     updateTextViewHeight()
