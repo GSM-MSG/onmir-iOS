@@ -2,7 +2,7 @@ import Nuke
 import SnapKit
 import UIKit
 
-extension NewBookViewController {
+extension BookSearchViewController {
   final class SelectedBookView: UIView {
     private let containerView: UIView = {
       let view = UIView()

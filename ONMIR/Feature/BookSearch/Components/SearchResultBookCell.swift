@@ -2,7 +2,7 @@ import Nuke
 import SnapKit
 import UIKit
 
-extension NewBookViewController {
+extension BookSearchViewController {
   final class BookCell: UICollectionViewCell {
     private let coverImageView: UIImageView = {
       let imageView = UIImageView()

@@ -1,7 +1,7 @@
 import SnapKit
 import UIKit
 
-public final class NewBookViewController: UIViewController {
+public final class BookSearchViewController: UIViewController {
   private lazy var searchController: UISearchController = {
     let searchController = UISearchController(searchResultsController: nil)
     searchController.searchBar.placeholder = "Search by title, author or keyword"
@@ -26,7 +26,7 @@ public final class NewBookViewController: UIViewController {
     return collectionView
   }()
 
-  private let viewModel = NewBookViewModel()
+  private let viewModel = BookSearchViewModel()
 
   private typealias DataSource = UICollectionViewDiffableDataSource<Int, BookSearchRepresentation>
   private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, BookSearchRepresentation>
@@ -291,7 +291,7 @@ public final class NewBookViewController: UIViewController {
   }
 }
 
-extension NewBookViewController: UICollectionViewDelegate {
+extension BookSearchViewController: UICollectionViewDelegate {
   public func collectionView(
     _ collectionView: UICollectionView,
     didSelectItemAt indexPath: IndexPath
@@ -313,7 +313,7 @@ extension NewBookViewController: UICollectionViewDelegate {
   }
 }
 
-extension NewBookViewController: UISearchBarDelegate {
+extension BookSearchViewController: UISearchBarDelegate {
   public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
     if searchText.isEmpty {
       searchTask?.cancel()
@@ -325,7 +325,7 @@ extension NewBookViewController: UISearchBarDelegate {
   }
 }
 
-extension NewBookViewController: UISearchResultsUpdating {
+extension BookSearchViewController: UISearchResultsUpdating {
   public func updateSearchResults(for searchController: UISearchController) {
     guard let searchText = searchController.searchBar.text, !searchText.isEmpty else { return }
     debouncedSearch(query: searchText)
