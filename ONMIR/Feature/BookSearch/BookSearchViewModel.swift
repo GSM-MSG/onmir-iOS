@@ -4,7 +4,7 @@ import Observation
 
 @MainActor
 @Observable
-final class NewBookViewModel {
+final class BookSearchViewModel {
   private(set) var books: [BookSearchRepresentation] = []
   private(set) var selectedBook: BookSearchRepresentation?
   
