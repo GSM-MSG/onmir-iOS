@@ -106,6 +106,8 @@ public final class BookRecordEditorViewModel {
         switch editMode {
         case .create:
           readingLog = ReadingLogEntity(context: context)
+          let book = context.object(with: book.objectID) as? BookEntity
+          assert(book != nil)
           readingLog.book = book
 
           context.insert(readingLog)
