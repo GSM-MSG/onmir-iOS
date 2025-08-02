@@ -125,7 +125,7 @@ public final class HomeViewController: UIViewController {
     }
 
     @objc private func didTapAddBookButton() {
-        let destination = BookSearchViewController { self.dismiss(animated: true) }
+let destination = BookSearchViewController { [weak self] in self?.dismiss(animated: true) }
         destination.modalPresentationStyle = .popover
         self.present(destination, animated: true)
     }
