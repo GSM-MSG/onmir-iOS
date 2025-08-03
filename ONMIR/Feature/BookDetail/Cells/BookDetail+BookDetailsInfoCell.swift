@@ -326,9 +326,7 @@ extension BookDetailViewController {
       }
       
       if let publishedDate = book.publishedDate {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        publishedDateLabel.text = "Published: \(formatter.string(from: publishedDate))"
+        publishedDateLabel.text = "Published: \(publishedDate.formatted(.dateTime.year().month().day()))"
         publishedDateLabel.isHidden = false
         hasMetadata = true
       } else {
