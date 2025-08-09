@@ -9,6 +9,9 @@ public struct BookSearchRepresentation: Sendable, Hashable {
   public let publishedDate: String?
   public let description: String?
   public let thumbnailURL: URL?
+  public let isbn: String?
+  public let isbn13: String?
+  public let pageCount: Int64
 
   init(from bookItem: GoogleBooksClient.BookSearchResponse.BookItem) {
     self.id = bookItem.id
@@ -16,8 +19,24 @@ public struct BookSearchRepresentation: Sendable, Hashable {
     self.subtitle = bookItem.volumeInfo.subtitle
     self.authors = bookItem.volumeInfo.authors
     self.publisher = bookItem.volumeInfo.publisher
-    self.publishedDate = bookItem.volumeInfo.publishedDate
     self.description = bookItem.volumeInfo.description
+    self.pageCount = Int64(bookItem.volumeInfo.pageCount ?? 0)
+    #warning("TODO: 연도만 오는 경우에 대한 처리 필요")
+    self.publishedDate = bookItem.volumeInfo.publishedDate
+
+    var isbn10: String?
+    var isbn13: String?
+    if let identifiers = bookItem.volumeInfo.industryIdentifiers {
+      for identifier in identifiers {
+        if identifier.type == "ISBN_10" {
+          isbn10 = identifier.identifier
+        } else if identifier.type == "ISBN_13" {
+          isbn13 = identifier.identifier
+        }
+      }
+    }
+    self.isbn = isbn10
+    self.isbn13 = isbn13
 
     if let thumbnailURLString = bookItem.volumeInfo.imageLinks?.thumbnail {
       let secureURL = thumbnailURLString.replacingOccurrences(
@@ -35,7 +54,7 @@ public struct BookSearchRepresentation: Sendable, Hashable {
   }
 
   public static func == (lhs: BookSearchRepresentation, rhs: BookSearchRepresentation) -> Bool {
-    return lhs.id == rhs.id && lhs.title == rhs.title
+    return lhs.title == rhs.title
       && lhs.subtitle == rhs.subtitle && lhs.authors == rhs.authors
       && lhs.publisher == rhs.publisher
       && lhs.publishedDate == rhs.publishedDate

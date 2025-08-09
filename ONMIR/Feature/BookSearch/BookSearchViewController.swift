@@ -26,7 +26,7 @@ public final class BookSearchViewController: UIViewController {
     return collectionView
   }()
 
-  private let viewModel = BookSearchViewModel()
+  private let viewModel: BookSearchViewModel
 
   private typealias DataSource = UICollectionViewDiffableDataSource<Int, BookSearchRepresentation>
   private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, BookSearchRepresentation>
@@ -48,7 +48,7 @@ public final class BookSearchViewController: UIViewController {
     )
   }
 
-  private let completion: @MainActor () -> Void
+  private let completion: @MainActor (BookSearchRepresentation) -> Void
 
   private var searchTask: Task<Void, Never>?
   private let searchDebounceTime: TimeInterval = 0.3
@@ -59,8 +59,9 @@ public final class BookSearchViewController: UIViewController {
     return indicator
   }()
 
-  init(completion: @MainActor @escaping () -> Void) {
+  init(completion: @MainActor @escaping (BookSearchRepresentation) -> Void) {
     self.completion = completion
+    self.viewModel = BookSearchViewModel()
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -188,18 +189,18 @@ public final class BookSearchViewController: UIViewController {
     navigationItem.searchController = searchController
     navigationItem.hidesSearchBarWhenScrolling = false
     navigationItem.leftBarButtonItem = UIBarButtonItem(
-      title: "Cancel",
+      systemItem: .cancel,
       primaryAction: UIAction { [weak self] _ in
         self?.cancelButtonTapped()
       }
     )
     navigationItem.rightBarButtonItem = UIBarButtonItem(
-      title: "Done",
+      systemItem: .done,
       primaryAction: UIAction { [weak self] _ in
         self?.doneButtonTapped()
       }
     )
-    navigationItem.rightBarButtonItem?.style = .done
+    
     navigationItem.rightBarButtonItem?.isEnabled = false
   }
 
@@ -229,7 +230,7 @@ public final class BookSearchViewController: UIViewController {
   }
 
   private func doneButtonTapped() {
-    guard viewModel.hasSelectedBook else {
+    guard let selectedBook = viewModel.selectedBook else {
       let alert = UIAlertController(
         title: "No Book Selected",
         message: "Please select at least one book to continue.",
@@ -241,7 +242,7 @@ public final class BookSearchViewController: UIViewController {
     }
 
     dismiss(animated: true) { [weak self] in
-      self?.completion()
+      self?.completion(selectedBook)
     }
   }
 
