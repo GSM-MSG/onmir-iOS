@@ -91,6 +91,12 @@ extension GoogleBooksClient {
         public let categories: [String]?
         public let language: String?
         public let imageLinks: ImageLinks?
+        public let industryIdentifiers: [IndustryIdentifier]?
+
+        public struct IndustryIdentifier: Decodable, Sendable {
+          public let type: String
+          public let identifier: String
+        }
 
         public struct ImageLinks: Decodable, Sendable {
           public let smallThumbnail: String?

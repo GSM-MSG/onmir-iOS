@@ -15,10 +15,17 @@ final class BookSearchViewModel {
   private let maxResultsPerPage = 20
   
   @ObservationIgnored
-  private let googleBooksClient = GoogleBooksClient()
+  private let googleBooksClient: GoogleBooksClient
+
   
   var hasSelectedBook: Bool {
     return selectedBook != nil
+  }
+
+  init(
+    googleBooksClient: GoogleBooksClient = GoogleBooksClient()
+  ) {
+    self.googleBooksClient = googleBooksClient
   }
   
   func fetchBooks(query: String) async {
@@ -86,4 +93,5 @@ final class BookSearchViewModel {
   func clearSelection() {
     selectedBook = nil
   }
+
 }

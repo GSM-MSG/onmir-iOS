@@ -53,8 +53,18 @@ extension HomeViewController {
         }
 
         func prepare(imageURL: URL?, currentPage: Int, totalPage: Int) {
-            let percentage = Int(Double(currentPage) / Double(totalPage) * 100)
-            self.readingProgressLabel.text = "\(percentage)%"
+            if totalPage <= 0 {
+                self.readingProgressLabel.text = ""
+            } else {
+                let rawPercentage = Double(currentPage) / Double(totalPage) * 100
+                let percentage: Int
+                if rawPercentage.isNaN || rawPercentage.isInfinite {
+                    percentage = 0
+                } else {
+                    percentage = max(0, min(100, Int(rawPercentage)))
+                }
+                self.readingProgressLabel.text = "\(percentage)%"
+            }
 
             if let thumbnailURL = imageURL {
                 imageDownloadTask = Task {

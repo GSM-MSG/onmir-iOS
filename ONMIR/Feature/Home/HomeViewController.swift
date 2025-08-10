@@ -37,7 +37,28 @@ public final class HomeViewController: UIViewController {
         setupUI()
         setupTarget()
         setupNavigationBar()
-        updateContentUnavailableView(isEmpty: viewModel.books.isEmpty)
+        
+        Task {
+            await viewModel.loadBooks()
+            await MainActor.run {
+                self.readingBookCollectionView.reloadData()
+                self.updateContentUnavailableView(isEmpty: self.viewModel.books.isEmpty)
+                self.readingBookCollectionView.isHidden = self.viewModel.books.isEmpty
+            }
+        }
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        Task {
+            await viewModel.refreshBooks()
+            await MainActor.run {
+                self.readingBookCollectionView.reloadData()
+                self.updateContentUnavailableView(isEmpty: self.viewModel.books.isEmpty)
+                self.readingBookCollectionView.isHidden = self.viewModel.books.isEmpty
+            }
+        }
     }
 
     private func setupNavigationBar() {
@@ -125,9 +146,19 @@ public final class HomeViewController: UIViewController {
     }
 
     @objc private func didTapAddBookButton() {
-        let destination = BookSearchViewController { self.dismiss(animated: true) }
-        destination.modalPresentationStyle = .popover
-        self.present(destination, animated: true)
+        let destination = BookSearchViewController { book in
+            Task {
+                let _ = await self.viewModel.addBook(book: book)
+                await MainActor.run {
+                    self.readingBookCollectionView.reloadData()
+                    self.updateContentUnavailableView(isEmpty: self.viewModel.books.isEmpty)
+                    self.readingBookCollectionView.isHidden = self.viewModel.books.isEmpty
+                }
+            }
+        }
+      let navigationController = UINavigationController(rootViewController: destination)
+      navigationController.modalPresentationStyle = .overFullScreen
+        self.present(navigationController, animated: true)
     }
 }
 
@@ -148,5 +179,18 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.books.count
+    }
+
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let book = viewModel.books[indexPath.item]
+        let bookDetailVC = BookDetailViewController(bookObjectID: book.bookObjectID)
+        if #available(iOS 18.0, *) {
+          let zoomOption = UIViewController.Transition.ZoomOptions()
+          bookDetailVC.preferredTransition = .zoom(options: zoomOption, sourceViewProvider: { context in
+                let cell = collectionView.cellForItem(at: indexPath)
+            return cell
+            })
+        }
+      self.present(bookDetailVC, animated: true)
     }
 }
