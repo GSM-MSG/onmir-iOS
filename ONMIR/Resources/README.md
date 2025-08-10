@@ -15,6 +15,7 @@
 - rating: Double
 - status: BookStatusTypeKind
 - title: String
+- bookDescription: String
 
 Relationships:
 - logs: [ReadingLogEntity] - Cascade

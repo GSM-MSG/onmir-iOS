@@ -8,6 +8,7 @@ final class BookDetailViewController: UIViewController {
     case bookInfo
     case readingLogs
     case quotes
+    case bookDetails
   }
 
   enum Item: Hashable, @unchecked Sendable {
@@ -16,6 +17,7 @@ final class BookDetailViewController: UIViewController {
     case quote(QuoteEntity)
     case addRecord
     case addQuote
+    case bookDetails(BookEntity)
   }
 
   private let viewModel = BookDetailViewModel()
@@ -208,10 +210,11 @@ final class BookDetailViewController: UIViewController {
   private func updateSnapshot() {
     var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
 
-    snapshot.appendSections([.bookInfo, .readingLogs, .quotes])
+    snapshot.appendSections([.bookInfo, .readingLogs, .quotes, .bookDetails])
 
     if let book = viewModel.book {
       snapshot.appendItems([.book(book)], toSection: .bookInfo)
+      snapshot.appendItems([.bookDetails(book)], toSection: .bookDetails)
     }
 
     let logItems: [Item] = [.addRecord] + viewModel.recentReadingLogs.map { Item.readingLog($0) }
@@ -250,6 +253,14 @@ final class BookDetailViewController: UIViewController {
     > { [weak self] cell, indexPath, actionType in
       cell.configure(actionType: actionType) {
         self?.handleAddAction(actionType)
+      }
+    }
+
+    let bookDetailsInfoCellRegistration = UICollectionView.CellRegistration<
+      BookDetailsInfoCell, BookEntity
+    > { [weak self] cell, indexPath, book in
+      cell.configure(with: book) {
+        self?.collectionView.performBatchUpdates(nil, completion: nil)
       }
     }
 
@@ -319,6 +330,12 @@ final class BookDetailViewController: UIViewController {
           for: indexPath,
           item: .newQuote
         )
+      case .bookDetails(let book):
+        return collectionView.dequeueConfiguredReusableCell(
+          using: bookDetailsInfoCellRegistration,
+          for: indexPath,
+          item: book
+        )
       }
     }
 
@@ -346,6 +363,8 @@ final class BookDetailViewController: UIViewController {
         return self.createReadingLogsSection()
       case .quotes:
         return self.createQuotesSection()
+      case .bookDetails:
+        return self.createBookDetailsSection()
       }
     }
   }
@@ -449,6 +468,33 @@ final class BookDetailViewController: UIViewController {
       alignment: .top
     )
     section.boundarySupplementaryItems = [header]
+
+    return section
+  }
+
+  private func createBookDetailsSection() -> NSCollectionLayoutSection {
+    let itemSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1.0),
+      heightDimension: .estimated(200)
+    )
+    let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+    let groupSize = NSCollectionLayoutSize(
+      widthDimension: .fractionalWidth(1.0),
+      heightDimension: .estimated(200)
+    )
+    let group = NSCollectionLayoutGroup.horizontal(
+      layoutSize: groupSize,
+      subitems: [item]
+    )
+
+    let section = NSCollectionLayoutSection(group: group)
+    section.contentInsets = NSDirectionalEdgeInsets(
+      top: 0,
+      leading: 0,
+      bottom: 24,
+      trailing: 0
+    )
 
     return section
   }

@@ -11,6 +11,17 @@ public final class BookStatusTypeKind: NSObject, NSSecureCoding, @unchecked Send
 
   let status: BookStatusType
 
+  var displayName: String {
+    switch status {
+    case .toRead:
+      return "To Read"
+    case .reading:
+      return "Reading"
+    case .completed:
+      return "Completed"
+    }
+  }
+
   init(status: BookStatusType) {
     self.status = status
     super.init()

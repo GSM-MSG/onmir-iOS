@@ -1,8 +1,7 @@
 import Foundation
 
 public struct BookRepresentation: Sendable, Hashable {
-  // Core book properties matching BookEntity
-  public let originalBookID: String
+  public let originalBookID: String?
   public let title: String
   public let author: String?
   public let isbn: String?
@@ -11,7 +10,7 @@ public struct BookRepresentation: Sendable, Hashable {
   public let publishedDate: Date?
   public let publisher: String?
   public let rating: Double
-  public let source: BookSourceType
+  public let source: BookSourceType?
   public let status: BookStatusType?
   public let coverImageURL: URL?
 
@@ -46,7 +45,7 @@ public struct BookRepresentation: Sendable, Hashable {
 
 extension BookRepresentation {
   public init(from bookEntity: BookEntity) {
-    self.originalBookID = bookEntity.originalBookID ?? ""
+    self.originalBookID = bookEntity.originalBookID
     self.title = bookEntity.title ?? ""
     self.author = bookEntity.author
     self.isbn = bookEntity.isbn
@@ -55,25 +54,8 @@ extension BookRepresentation {
     self.publishedDate = bookEntity.publishedDate
     self.publisher = bookEntity.publisher
     self.rating = bookEntity.rating
-    self.source = bookEntity.source?.sourceType ?? .googleBooks
+    self.source = bookEntity.source?.sourceType
     self.status = bookEntity.status?.status
     self.coverImageURL = bookEntity.coverImageURL
-  }
-  
-  public func toBookEntity(in context: NSManagedObjectContext) -> BookEntity {
-    let bookEntity = BookEntity(context: context)
-    bookEntity.originalBookID = originalBookID
-    bookEntity.title = title
-    bookEntity.author = author
-    bookEntity.isbn = isbn
-    bookEntity.isbn13 = isbn13
-    bookEntity.pageCount = pageCount
-    bookEntity.publishedDate = publishedDate
-    bookEntity.publisher = publisher
-    bookEntity.rating = rating
-    bookEntity.source = BookSourceTypeKind(sourceType: source)
-    bookEntity.status = status.map { BookStatusTypeKind(status: $0) }
-    bookEntity.coverImageURL = coverImageURL
-    return bookEntity
   }
 }
