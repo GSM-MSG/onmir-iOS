@@ -38,12 +38,18 @@ public struct BookSearchRepresentation: Sendable, Hashable {
     self.isbn = isbn10
     self.isbn13 = isbn13
 
-    if let thumbnailURLString = bookItem.volumeInfo.imageLinks?.thumbnail {
+    if let thumbnailURLString = bookItem.volumeInfo.imageLinks?.extraLarge ?? bookItem.volumeInfo.imageLinks?.thumbnail {
       let secureURL = thumbnailURLString.replacingOccurrences(
         of: "http://",
         with: "https://"
       )
-      self.thumbnailURL = URL(string: secureURL)
+      if let baseURL = URL(string: secureURL) {
+        var urlComponents = URLComponents(url: baseURL, resolvingAgainstBaseURL: false)
+        urlComponents?.queryItems?.append(URLQueryItem(name: "fife", value: "w400-h600"))
+        self.thumbnailURL = urlComponents?.url ?? baseURL
+      } else {
+        self.thumbnailURL = nil
+      }
     } else {
       self.thumbnailURL = nil
     }

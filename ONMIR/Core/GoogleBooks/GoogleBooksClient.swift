@@ -101,6 +101,7 @@ extension GoogleBooksClient {
         public struct ImageLinks: Decodable, Sendable {
           public let smallThumbnail: String?
           public let thumbnail: String?
+          public let extraLarge: String?
         }
       }
 

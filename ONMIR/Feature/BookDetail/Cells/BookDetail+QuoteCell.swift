@@ -82,5 +82,9 @@ extension BookDetailViewController {
     func configure(with quote: QuoteEntity) {
       contentLabel.text = quote.content ?? ""
     }
+    
+    func contextMenuHighlightView() -> UIView? {
+      return containerView
+    }
   }
 }
