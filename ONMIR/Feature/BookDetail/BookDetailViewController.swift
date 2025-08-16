@@ -91,9 +91,14 @@ final class BookDetailViewController: UIViewController {
     startStateObserving()
     viewModel.loadBook(with: bookObjectID)
 
-    registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (traitEnvironment: Self, previousTraitCollection) in
-      if previousTraitCollection.userInterfaceStyle != traitEnvironment.traitCollection.userInterfaceStyle {
-        traitEnvironment.gradientLayer.colors = Self.gradientColors.map(\.cgColor)
+    registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+      (traitEnvironment: Self, previousTraitCollection) in
+      if previousTraitCollection.userInterfaceStyle
+        != traitEnvironment.traitCollection.userInterfaceStyle
+      {
+        traitEnvironment.gradientLayer.colors = Self.gradientColors.map(
+          \.cgColor
+        )
       }
     }
   }
@@ -110,12 +115,62 @@ final class BookDetailViewController: UIViewController {
     view.backgroundColor = .systemBackground
     navigationItem.largeTitleDisplayMode = .never
 
+    setupNavigationBar()
     setupBackgroundView()
 
     view.addSubview(collectionView)
     collectionView.snp.makeConstraints { make in
       make.edges.equalToSuperview()
     }
+  }
+
+  private func setupNavigationBar() {
+    let closeButton = UIBarButtonItem(
+      image: .init(systemName: "xmark.circle.fill"),
+      primaryAction: UIAction { [weak self] _ in
+        self?.handleCloseButtonTapped()
+      }
+    )
+    closeButton.tintColor = .systemGray5
+    navigationItem.leftBarButtonItem = closeButton
+
+    let moreMenu = UIMenu(
+      title: "",
+      children: [
+        UIAction(
+          title: "Share Book",
+          image: UIImage(systemName: "square.and.arrow.up")
+        ) { [weak self] _ in
+          guard let self = self, let book = self.viewModel.book else { return }
+          self.shareBook(book)
+        },
+        UIAction(title: "Rate Book", image: UIImage(systemName: "star")) {
+          [weak self] _ in
+          guard let self = self, let book = self.viewModel.book else { return }
+          self.rateBook(book)
+        },
+        UIAction(title: "Edit Book", image: UIImage(systemName: "pencil")) {
+          [weak self] _ in
+          guard let self = self, let book = self.viewModel.book else { return }
+          self.editBook(book)
+        },
+        UIAction(
+          title: "Delete Book",
+          image: UIImage(systemName: "trash"),
+          attributes: .destructive
+        ) { [weak self] _ in
+          guard let self = self, let book = self.viewModel.book else { return }
+          self.deleteBook(book)
+        },
+      ]
+    )
+
+    let moreButton = UIBarButtonItem(
+      image: UIImage(systemName: "ellipsis.circle.fill"),
+      menu: moreMenu
+    )
+    moreButton.tintColor = .systemGray5
+    navigationItem.rightBarButtonItem = moreButton
   }
 
   private func setupBackgroundView() {
@@ -217,10 +272,12 @@ final class BookDetailViewController: UIViewController {
       snapshot.appendItems([.bookDetails(book)], toSection: .bookDetails)
     }
 
-    let logItems: [Item] = [.addRecord] + viewModel.recentReadingLogs.map { Item.readingLog($0) }
+    let logItems: [Item] =
+      [.addRecord] + viewModel.recentReadingLogs.map { Item.readingLog($0) }
     snapshot.appendItems(logItems, toSection: .readingLogs)
 
-    let quoteItems: [Item] = [.addQuote] + viewModel.recentQuotes.map { Item.quote($0) }
+    let quoteItems: [Item] =
+      [.addQuote] + viewModel.recentQuotes.map { Item.quote($0) }
     snapshot.appendItems(quoteItems, toSection: .quotes)
 
     dataSource.apply(snapshot, animatingDifferences: true)
@@ -396,17 +453,21 @@ final class BookDetailViewController: UIViewController {
     return section
   }
 
-  private func createReadingLogsListSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+  private func createReadingLogsListSection(
+    environment: NSCollectionLayoutEnvironment
+  ) -> NSCollectionLayoutSection {
     var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
     configuration.showsSeparators = false
     configuration.backgroundColor = .clear
-    
-    configuration.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
+
+    configuration.trailingSwipeActionsConfigurationProvider = {
+      [weak self] indexPath in
       guard let self = self,
-            let item = self.dataSource.itemIdentifier(for: indexPath) else { 
-        return nil 
+        let item = self.dataSource.itemIdentifier(for: indexPath)
+      else {
+        return nil
       }
-      
+
       switch item {
       case .readingLog(let readingLog):
         let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, completion in
@@ -415,20 +476,26 @@ final class BookDetailViewController: UIViewController {
         }
         editAction.backgroundColor = .systemBlue
         editAction.image = UIImage(systemName: "pencil")
-        
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completion in
+
+        let deleteAction = UIContextualAction(
+          style: .destructive,
+          title: "Delete"
+        ) { _, _, completion in
           self.showDeleteConfirmation(readingLogs: [readingLog])
           completion(true)
         }
         deleteAction.image = UIImage(systemName: "trash")
-        
+
         return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
       default:
         return nil
       }
     }
 
-    let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: environment)
+    let section = NSCollectionLayoutSection.list(
+      using: configuration,
+      layoutEnvironment: environment
+    )
     section.contentInsets = NSDirectionalEdgeInsets(
       top: 0,
       leading: 0,
@@ -450,39 +517,52 @@ final class BookDetailViewController: UIViewController {
     return section
   }
 
-  private func createQuotesListSection(environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+  private func createQuotesListSection(
+    environment: NSCollectionLayoutEnvironment
+  ) -> NSCollectionLayoutSection {
     var configuration = UICollectionLayoutListConfiguration(appearance: .plain)
     configuration.showsSeparators = false
     configuration.backgroundColor = .clear
-    
-    configuration.trailingSwipeActionsConfigurationProvider = { [weak self] indexPath in
+
+    configuration.trailingSwipeActionsConfigurationProvider = {
+      [weak self] indexPath in
       guard let self = self,
-            let item = self.dataSource.itemIdentifier(for: indexPath) else { 
-        return nil 
+        let item = self.dataSource.itemIdentifier(for: indexPath)
+      else {
+        return nil
       }
-      
+
       switch item {
       case .quote(let quote):
-        let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, completion in
-          #warning("TODO: Quote edit")
+        let editAction = UIContextualAction(style: .normal, title: "Edit") {
+          _,
+          _,
+          completion in
+          self.showEditQuote(quote)
           completion(true)
         }
         editAction.backgroundColor = .systemBlue
         editAction.image = UIImage(systemName: "pencil")
-        
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completion in
-          #warning("TODO: Quote delete")
+
+        let deleteAction = UIContextualAction(
+          style: .destructive,
+          title: "Delete"
+        ) { _, _, completion in
+          self.showDeleteConfirmation(quotes: [quote])
           completion(true)
         }
         deleteAction.image = UIImage(systemName: "trash")
-        
+
         return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
       default:
         return nil
       }
     }
 
-    let section = NSCollectionLayoutSection.list(using: configuration, layoutEnvironment: environment)
+    let section = NSCollectionLayoutSection.list(
+      using: configuration,
+      layoutEnvironment: environment
+    )
     section.contentInsets = NSDirectionalEdgeInsets(
       top: 0,
       leading: 0,
@@ -551,14 +631,19 @@ final class BookDetailViewController: UIViewController {
 }
 
 extension BookDetailViewController: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
     collectionView.deselectItem(at: indexPath, animated: true)
-    
+
     guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
-    
+
     switch item {
     case .readingLog(let readingLog):
       showEditReadingLog(readingLog)
+    case .quote(let quote):
+      showEditQuote(quote)
     default:
       break
     }
@@ -570,21 +655,22 @@ extension BookDetailViewController: UICollectionViewDelegate {
     point: CGPoint
   ) -> UIContextMenuConfiguration? {
     guard !indexPaths.isEmpty else { return nil }
-    
+
     let items = indexPaths.compactMap { dataSource.itemIdentifier(for: $0) }
-    
+
     let readingLogs = items.compactMap { item -> ReadingLogEntity? in
       if case .readingLog(let log) = item { return log }
       return nil
     }
-    
+
     let quotes = items.compactMap { item -> QuoteEntity? in
       if case .quote(let quote) = item { return quote }
       return nil
     }
-    
+
     if readingLogs.count == items.count && !readingLogs.isEmpty {
-      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) {
+        _ in
         let deleteAction = UIAction(
           title: "Delete \(readingLogs.count) Reading Logs",
           image: UIImage(systemName: "trash"),
@@ -592,43 +678,47 @@ extension BookDetailViewController: UICollectionViewDelegate {
         ) { [weak self] _ in
           self?.showDeleteConfirmation(readingLogs: readingLogs)
         }
-        
+
         return UIMenu(title: "", children: [deleteAction])
       }
     } else if quotes.count == items.count && !quotes.isEmpty {
-      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) {
+        _ in
         let deleteAction = UIAction(
           title: "Delete \(quotes.count) Quotes",
           image: UIImage(systemName: "trash"),
           attributes: .destructive
         ) { [weak self] _ in
-          #warning("TODO: Multiple quote delete")
+          self?.showDeleteConfirmation(quotes: quotes)
         }
-        
+
         return UIMenu(title: "", children: [deleteAction])
       }
     }
-    
+
     return nil
   }
-  
+
   func collectionView(
     _ collectionView: UICollectionView,
     contextMenuConfigurationForItemAt indexPath: IndexPath,
     point: CGPoint
   ) -> UIContextMenuConfiguration? {
-    guard let item = dataSource.itemIdentifier(for: indexPath) else { return nil }
-    
+    guard let item = dataSource.itemIdentifier(for: indexPath) else {
+      return nil
+    }
+
     switch item {
     case .readingLog(let readingLog):
-      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) {
+        _ in
         let editAction = UIAction(
           title: "Edit",
           image: UIImage(systemName: "pencil")
         ) { [weak self] _ in
           self?.showEditReadingLog(readingLog)
         }
-        
+
         let deleteAction = UIAction(
           title: "Delete",
           image: UIImage(systemName: "trash"),
@@ -636,63 +726,72 @@ extension BookDetailViewController: UICollectionViewDelegate {
         ) { [weak self] _ in
           self?.showDeleteConfirmation(readingLogs: [readingLog])
         }
-        
+
         return UIMenu(title: "", children: [editAction, deleteAction])
       }
     case .quote(let quote):
-      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+      return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) {
+        _ in
         let editAction = UIAction(
           title: "Edit",
           image: UIImage(systemName: "pencil")
         ) { [weak self] _ in
-          #warning("TODO: Quote edit")
+          self?.showEditQuote(quote)
         }
-        
+
         let deleteAction = UIAction(
           title: "Delete",
           image: UIImage(systemName: "trash"),
           attributes: .destructive
         ) { [weak self] _ in
-          #warning("TODO: Quote delete")
+          self?.showDeleteConfirmation(quotes: [quote])
         }
-        
+
         return UIMenu(title: "", children: [editAction, deleteAction])
       }
     default:
       return nil
     }
   }
-  
+
   func collectionView(
     _ collectionView: UICollectionView,
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     highlightPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let item = dataSource.itemIdentifier(for: indexPath) else { return nil }
-    
+    guard let item = dataSource.itemIdentifier(for: indexPath) else {
+      return nil
+    }
+
     switch item {
     case .readingLog:
-      guard let cell = collectionView.cellForItem(at: indexPath) as? BookDetailViewController.ReadingLogCell,
-            let highlightView = cell.contextMenuHighlightView() else {
+      guard
+        let cell = collectionView.cellForItem(at: indexPath)
+          as? BookDetailViewController.ReadingLogCell,
+        let highlightView = cell.contextMenuHighlightView()
+      else {
         return nil
       }
-      
+
       let parameters = UIPreviewParameters()
       parameters.backgroundColor = .clear
-      
+
       return UITargetedPreview(view: highlightView, parameters: parameters)
-      
+
     case .quote:
-      guard let cell = collectionView.cellForItem(at: indexPath) as? BookDetailViewController.QuoteCell,
-            let highlightView = cell.contextMenuHighlightView() else {
+      guard
+        let cell = collectionView.cellForItem(at: indexPath)
+          as? BookDetailViewController.QuoteCell,
+        let highlightView = cell.contextMenuHighlightView()
+      else {
         return nil
       }
-      
+
       let parameters = UIPreviewParameters()
       parameters.backgroundColor = .clear
-      
+
       return UITargetedPreview(view: highlightView, parameters: parameters)
-      
+
     default:
       return nil
     }
@@ -703,42 +802,52 @@ extension BookDetailViewController: UICollectionViewDelegate {
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     dismissalPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let item = dataSource.itemIdentifier(for: indexPath) else { return nil }
-    
+    guard let item = dataSource.itemIdentifier(for: indexPath) else {
+      return nil
+    }
+
     switch item {
     case .readingLog:
-      guard let cell = collectionView.cellForItem(at: indexPath) as? BookDetailViewController.ReadingLogCell,
-            let highlightView = cell.contextMenuHighlightView() else {
+      guard
+        let cell = collectionView.cellForItem(at: indexPath)
+          as? BookDetailViewController.ReadingLogCell,
+        let highlightView = cell.contextMenuHighlightView()
+      else {
         return nil
       }
-      
+
       let parameters = UIPreviewParameters()
       parameters.backgroundColor = .clear
-      
+
       return UITargetedPreview(view: highlightView, parameters: parameters)
-      
+
     case .quote:
-      guard let cell = collectionView.cellForItem(at: indexPath) as? BookDetailViewController.QuoteCell,
-            let highlightView = cell.contextMenuHighlightView() else {
+      guard
+        let cell = collectionView.cellForItem(at: indexPath)
+          as? BookDetailViewController.QuoteCell,
+        let highlightView = cell.contextMenuHighlightView()
+      else {
         return nil
       }
-      
+
       let parameters = UIPreviewParameters()
       parameters.backgroundColor = .clear
-      
+
       return UITargetedPreview(view: highlightView, parameters: parameters)
-      
+
     default:
       return nil
     }
   }
-  
+
   func collectionView(
     _ collectionView: UICollectionView,
     canPerformPrimaryActionForItemAt indexPath: IndexPath
   ) -> Bool {
-    guard let item = dataSource.itemIdentifier(for: indexPath) else { return false }
-    
+    guard let item = dataSource.itemIdentifier(for: indexPath) else {
+      return false
+    }
+
     switch item {
     case .readingLog, .quote:
       return true
@@ -746,21 +855,23 @@ extension BookDetailViewController: UICollectionViewDelegate {
       return false
     }
   }
-  
+
   func collectionView(
     _ collectionView: UICollectionView,
     performPrimaryActionForItemAt indexPath: IndexPath
   ) {
     guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
-    
+
     switch item {
     case .readingLog(let readingLog):
       showEditReadingLog(readingLog)
+    case .quote(let quote):
+      showEditQuote(quote)
     default:
       break
     }
   }
-  
+
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     let contentOffsetY = scrollView.contentOffset.y
     let fadeStartOffset: CGFloat = 100
@@ -789,7 +900,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
     let allQuotesVC = AllQuotesViewController(bookObjectID: bookObjectID)
     navigationController?.pushViewController(allQuotesVC, animated: true)
   }
-  
+
   private func handleAddAction(_ actionType: AddActionCell.ActionType) {
     switch actionType {
     case .newRecord:
@@ -798,80 +909,113 @@ extension BookDetailViewController: UICollectionViewDelegate {
       showAddNewQuote()
     }
   }
-  
+
   private func showAddNewRecord() {
     guard let book = viewModel.book else { return }
-    
-    let recordViewModel = BookRecordEditorViewModel(book: book, editMode: .create)
-    let recordViewController = BookRecordEditorViewController(viewModel: recordViewModel) { [weak self] in
+
+    let recordViewModel = BookRecordEditorViewModel(
+      book: book,
+      editMode: .create
+    )
+    let recordViewController = BookRecordEditorViewController(
+      viewModel: recordViewModel
+    ) { [weak self] in
       self?.refreshBookData()
     }
-    let navigationController = UINavigationController(rootViewController: recordViewController)
-    
+    let navigationController = UINavigationController(
+      rootViewController: recordViewController
+    )
+
     if let sheet = navigationController.sheetPresentationController {
       sheet.detents = [.medium(), .large()]
       sheet.prefersGrabberVisible = true
     }
-    
+
     present(navigationController, animated: true)
   }
-  
+
   private func showAddNewQuote() {
-    print("Add new quote tapped")
+    guard let book = viewModel.book else { return }
+
+    let quoteViewModel = QuoteEditorViewModel(book: book, editMode: .create)
+    let quoteViewController = QuoteEditorViewController(
+      viewModel: quoteViewModel
+    ) { [weak self] in
+      self?.refreshBookData()
+    }
+    let navigationController = UINavigationController(
+      rootViewController: quoteViewController
+    )
+
+    if let sheet = navigationController.sheetPresentationController {
+      sheet.detents = [.medium(), .large()]
+      sheet.prefersGrabberVisible = true
+    }
+
+    present(navigationController, animated: true)
   }
-  
+
   private func refreshBookData() {
     viewModel.loadBook(with: bookObjectID)
   }
-  
+
   private func showEditReadingLog(_ readingLog: ReadingLogEntity) {
     guard let book = viewModel.book else { return }
-    
-    let recordViewModel = BookRecordEditorViewModel(book: book, editMode: .edit(readingLog))
-    let recordViewController = BookRecordEditorViewController(viewModel: recordViewModel) { [weak self] in
+
+    let recordViewModel = BookRecordEditorViewModel(
+      book: book,
+      editMode: .edit(readingLog)
+    )
+    let recordViewController = BookRecordEditorViewController(
+      viewModel: recordViewModel
+    ) { [weak self] in
       self?.refreshBookData()
     }
-    let navigationController = UINavigationController(rootViewController: recordViewController)
-    
+    let navigationController = UINavigationController(
+      rootViewController: recordViewController
+    )
+
     if let sheet = navigationController.sheetPresentationController {
       sheet.detents = [.medium(), .large()]
       sheet.prefersGrabberVisible = true
     }
-    
+
     present(navigationController, animated: true)
   }
-  
+
   private func showDeleteConfirmation(readingLogs: [ReadingLogEntity]) {
     let count = readingLogs.count
-    let title = count == 1 ? "Delete Reading Log" : "Delete \(count) Reading Logs"
-    let message = count == 1 ? 
-      "Are you sure you want to delete this reading log?" :
-      "Are you sure you want to delete these \(count) reading logs?"
-    
+    let title =
+      count == 1 ? "Delete Reading Log" : "Delete \(count) Reading Logs"
+    let message =
+      count == 1
+      ? "Are you sure you want to delete this reading log?"
+      : "Are you sure you want to delete these \(count) reading logs?"
+
     let alert = UIAlertController(
       title: title,
       message: message,
       preferredStyle: .alert
     )
-    
+
     let deleteAction = UIAlertAction(
       title: "Delete",
       style: .destructive
     ) { [weak self] _ in
       self?.deleteReadingLogs(readingLogs)
     }
-    
+
     let cancelAction = UIAlertAction(
       title: "Cancel",
       style: .cancel
     )
-    
+
     alert.addAction(deleteAction)
     alert.addAction(cancelAction)
-    
+
     present(alert, animated: true)
   }
-  
+
   private func deleteReadingLogs(_ readingLogs: [ReadingLogEntity]) {
     Task {
       do {
@@ -881,18 +1025,207 @@ extension BookDetailViewController: UICollectionViewDelegate {
             context.delete(objectToDelete)
           }
         }
-        
+
         await MainActor.run {
           self.refreshBookData()
         }
       } catch {
         await MainActor.run {
-          let count = readingLogs.count
-          let message = "Failed to delete reading logs: \(error.localizedDescription)"
-            
+          let message =
+            "Failed to delete reading logs: \(error.localizedDescription)"
+
           let errorAlert = UIAlertController(
             title: "Error",
             message: message,
+            preferredStyle: .alert
+          )
+          errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+          self.present(errorAlert, animated: true)
+        }
+      }
+    }
+  }
+
+  private func showEditQuote(_ quote: QuoteEntity) {
+    guard let book = viewModel.book else { return }
+
+    let quoteViewModel = QuoteEditorViewModel(
+      book: book,
+      editMode: .edit(quote)
+    )
+    let quoteViewController = QuoteEditorViewController(
+      viewModel: quoteViewModel
+    ) { [weak self] in
+      self?.refreshBookData()
+    }
+    let navigationController = UINavigationController(
+      rootViewController: quoteViewController
+    )
+
+    if let sheet = navigationController.sheetPresentationController {
+      sheet.detents = [.medium(), .large()]
+      sheet.prefersGrabberVisible = true
+    }
+
+    present(navigationController, animated: true)
+  }
+
+  private func showDeleteConfirmation(quotes: [QuoteEntity]) {
+    let count = quotes.count
+    let title = count == 1 ? "Delete Quote" : "Delete \(count) Quotes"
+    let message =
+      count == 1
+      ? "Are you sure you want to delete this quote?"
+      : "Are you sure you want to delete these \(count) quotes?"
+
+    let alert = UIAlertController(
+      title: title,
+      message: message,
+      preferredStyle: .alert
+    )
+
+    let deleteAction = UIAlertAction(
+      title: "Delete",
+      style: .destructive
+    ) { [weak self] _ in
+      self?.deleteQuotes(quotes)
+    }
+
+    let cancelAction = UIAlertAction(
+      title: "Cancel",
+      style: .cancel
+    )
+
+    alert.addAction(deleteAction)
+    alert.addAction(cancelAction)
+
+    present(alert, animated: true)
+  }
+
+  private func deleteQuotes(_ quotes: [QuoteEntity]) {
+    Task {
+      do {
+        let deleteInteractor = DeleteQuoteInteractor()
+        let request = DeleteQuoteInteractor.Request(
+          quoteObjectIDs: quotes.map { $0.objectID }
+        )
+        try await deleteInteractor(request: request)
+
+        await MainActor.run {
+          self.refreshBookData()
+        }
+      } catch {
+        await MainActor.run {
+          let message = "Failed to delete quotes: \(error.localizedDescription)"
+
+          let errorAlert = UIAlertController(
+            title: "Error",
+            message: message,
+            preferredStyle: .alert
+          )
+          errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+          self.present(errorAlert, animated: true)
+        }
+      }
+    }
+  }
+
+  private func handleCloseButtonTapped() {
+    if let navigationController = navigationController,
+      navigationController.viewControllers.count > 1
+    {
+      navigationController.popViewController(animated: true)
+    } else {
+      dismiss(animated: true)
+    }
+  }
+
+  private func shareBook(_ book: BookEntity) {
+    var items: [Any] = []
+
+    if let title = book.title {
+      let shareText = "Check out this book: \(title)"
+      if let author = book.author {
+        items.append("\(shareText) by \(author)")
+      } else {
+        items.append(shareText)
+      }
+    }
+
+    if let coverURL = book.coverImageURL {
+      items.append(coverURL)
+    }
+
+    let activityViewController = UIActivityViewController(
+      activityItems: items,
+      applicationActivities: nil
+    )
+
+    if let popoverController = activityViewController
+      .popoverPresentationController
+    {
+      popoverController.barButtonItem = navigationItem.rightBarButtonItem
+    }
+
+    present(activityViewController, animated: true)
+  }
+
+  private func rateBook(_ book: BookEntity) {
+    #warning("TODO: Rate book")
+  }
+
+  private func editBook(_ book: BookEntity) {
+    #warning("TODO: Edit book")
+  }
+
+  private func deleteBook(_ book: BookEntity) {
+    let alert = UIAlertController(
+      title: "Delete Book",
+      message:
+        "Are you sure you want to delete this book? This will also delete all reading logs and quotes.",
+      preferredStyle: .alert
+    )
+
+    let deleteAction = UIAlertAction(
+      title: "Delete",
+      style: .destructive
+    ) { [weak self] _ in
+      self?.performBookDeletion(book)
+    }
+
+    let cancelAction = UIAlertAction(
+      title: "Cancel",
+      style: .cancel
+    )
+
+    alert.addAction(deleteAction)
+    alert.addAction(cancelAction)
+
+    present(alert, animated: true)
+  }
+
+  private func performBookDeletion(_ book: BookEntity) {
+    Task {
+      do {
+        try await ContextManager.shared.performAndSave { context in
+          let objectToDelete = context.object(with: book.objectID)
+          context.delete(objectToDelete)
+        }
+
+        await MainActor.run {
+          if let navigationController = navigationController,
+            navigationController.viewControllers.count > 1
+          {
+            navigationController.popViewController(animated: true)
+          } else {
+            dismiss(animated: true)
+          }
+        }
+      } catch {
+        await MainActor.run {
+          let errorAlert = UIAlertController(
+            title: "Error",
+            message: "Failed to delete book: \(error.localizedDescription)",
             preferredStyle: .alert
           )
           errorAlert.addAction(UIAlertAction(title: "OK", style: .default))

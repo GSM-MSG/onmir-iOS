@@ -71,8 +71,8 @@ public final class HomeViewController: UIViewController {
         view.backgroundColor = .secondarySystemBackground
 
         view.addSubview(bookListSectionRowView)
-        view.addSubview(addBookButton)
         view.addSubview(readingBookCollectionView)
+      view.addSubview(addBookButton)
 
         bookListSectionRowView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).inset(24)
@@ -184,13 +184,14 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let book = viewModel.books[indexPath.item]
         let bookDetailVC = BookDetailViewController(bookObjectID: book.bookObjectID)
+      let navigationController = UINavigationController(rootViewController: bookDetailVC)
         if #available(iOS 18.0, *) {
           let zoomOption = UIViewController.Transition.ZoomOptions()
-          bookDetailVC.preferredTransition = .zoom(options: zoomOption, sourceViewProvider: { context in
+          navigationController.preferredTransition = .zoom(options: zoomOption, sourceViewProvider: { context in
                 let cell = collectionView.cellForItem(at: indexPath)
             return cell
             })
         }
-      self.present(bookDetailVC, animated: true)
+      self.present(navigationController, animated: true)
     }
 }
