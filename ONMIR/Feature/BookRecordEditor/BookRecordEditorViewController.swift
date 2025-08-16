@@ -39,9 +39,11 @@ public final class BookRecordEditorViewController: UIViewController {
 
   private lazy var dataSource: UICollectionViewDiffableDataSource<Section, Item> = makeDataSource()
   private let viewModel: BookRecordEditorViewModel
+  private let onSaveCompletion: (() -> Void)?
 
-  init(viewModel: BookRecordEditorViewModel) {
+  init(viewModel: BookRecordEditorViewModel, onSaveCompletion: (() -> Void)? = nil) {
     self.viewModel = viewModel
+    self.onSaveCompletion = onSaveCompletion
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -397,7 +399,9 @@ public final class BookRecordEditorViewController: UIViewController {
       await viewModel.save()
 
       await MainActor.run {
-        dismiss(animated: true)
+        dismiss(animated: true) {
+          self.onSaveCompletion?()
+        }
       }
     }
   }

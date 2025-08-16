@@ -141,5 +141,9 @@ extension BookDetailViewController {
         bookCoverImageView.backgroundColor = .systemGray5
       }
     }
+    
+    func contextMenuHighlightView() -> UIView? {
+      return containerView
+    }
   }
 }
