@@ -142,17 +142,17 @@ final class BookDetailViewController: UIViewController {
           image: UIImage(systemName: "square.and.arrow.up")
         ) { [weak self] _ in
           guard let self = self, let book = self.viewModel.book else { return }
-          self.shareBook(book)
+          self.shareBook(book: book)
         },
         UIAction(title: "Rate Book", image: UIImage(systemName: "star")) {
           [weak self] _ in
           guard let self = self, let book = self.viewModel.book else { return }
-          self.rateBook(book)
+          self.rateBook(book: book)
         },
         UIAction(title: "Edit Book", image: UIImage(systemName: "pencil")) {
           [weak self] _ in
           guard let self = self, let book = self.viewModel.book else { return }
-          self.editBook(book)
+          self.editBook(book: book)
         },
         UIAction(
           title: "Delete Book",
@@ -160,7 +160,7 @@ final class BookDetailViewController: UIViewController {
           attributes: .destructive
         ) { [weak self] _ in
           guard let self = self, let book = self.viewModel.book else { return }
-          self.deleteBook(book)
+          self.deleteBook(book: book)
         },
       ]
     )
@@ -309,7 +309,7 @@ final class BookDetailViewController: UIViewController {
       AddActionCell, AddActionCell.ActionType
     > { [weak self] cell, indexPath, actionType in
       cell.configure(actionType: actionType) {
-        self?.handleAddAction(actionType)
+        self?.handleAddAction(actionType: actionType)
       }
     }
 
@@ -471,7 +471,7 @@ final class BookDetailViewController: UIViewController {
       switch item {
       case .readingLog(let readingLog):
         let editAction = UIContextualAction(style: .normal, title: "Edit") { _, _, completion in
-          self.showEditReadingLog(readingLog)
+          self.showEditReadingLog(readingLog: readingLog)
           completion(true)
         }
         editAction.backgroundColor = .systemBlue
@@ -538,7 +538,7 @@ final class BookDetailViewController: UIViewController {
           _,
           _,
           completion in
-          self.showEditQuote(quote)
+          self.showEditQuote(quote: quote)
           completion(true)
         }
         editAction.backgroundColor = .systemBlue
@@ -641,9 +641,9 @@ extension BookDetailViewController: UICollectionViewDelegate {
 
     switch item {
     case .readingLog(let readingLog):
-      showEditReadingLog(readingLog)
+      showEditReadingLog(readingLog: readingLog)
     case .quote(let quote):
-      showEditQuote(quote)
+      showEditQuote(quote: quote)
     default:
       break
     }
@@ -716,7 +716,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
           title: "Edit",
           image: UIImage(systemName: "pencil")
         ) { [weak self] _ in
-          self?.showEditReadingLog(readingLog)
+          self?.showEditReadingLog(readingLog: readingLog)
         }
 
         let deleteAction = UIAction(
@@ -736,7 +736,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
           title: "Edit",
           image: UIImage(systemName: "pencil")
         ) { [weak self] _ in
-          self?.showEditQuote(quote)
+          self?.showEditQuote(quote: quote)
         }
 
         let deleteAction = UIAction(
@@ -864,9 +864,9 @@ extension BookDetailViewController: UICollectionViewDelegate {
 
     switch item {
     case .readingLog(let readingLog):
-      showEditReadingLog(readingLog)
+      showEditReadingLog(readingLog: readingLog)
     case .quote(let quote):
-      showEditQuote(quote)
+      showEditQuote(quote: quote)
     default:
       break
     }
@@ -901,7 +901,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
     navigationController?.pushViewController(allQuotesVC, animated: true)
   }
 
-  private func handleAddAction(_ actionType: AddActionCell.ActionType) {
+  private func handleAddAction(actionType: AddActionCell.ActionType) {
     switch actionType {
     case .newRecord:
       showAddNewRecord()
@@ -959,7 +959,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
     viewModel.loadBook(with: bookObjectID)
   }
 
-  private func showEditReadingLog(_ readingLog: ReadingLogEntity) {
+  private func showEditReadingLog(readingLog: ReadingLogEntity) {
     guard let book = viewModel.book else { return }
 
     let recordViewModel = BookRecordEditorViewModel(
@@ -1002,7 +1002,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
       title: "Delete",
       style: .destructive
     ) { [weak self] _ in
-      self?.deleteReadingLogs(readingLogs)
+      self?.deleteReadingLogs(readingLogs: readingLogs)
     }
 
     let cancelAction = UIAlertAction(
@@ -1016,7 +1016,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
     present(alert, animated: true)
   }
 
-  private func deleteReadingLogs(_ readingLogs: [ReadingLogEntity]) {
+  private func deleteReadingLogs(readingLogs: [ReadingLogEntity]) {
     Task {
       do {
         try await ContextManager.shared.performAndSave { context in
@@ -1046,7 +1046,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
     }
   }
 
-  private func showEditQuote(_ quote: QuoteEntity) {
+  private func showEditQuote(quote: QuoteEntity) {
     guard let book = viewModel.book else { return }
 
     let quoteViewModel = QuoteEditorViewModel(
@@ -1088,7 +1088,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
       title: "Delete",
       style: .destructive
     ) { [weak self] _ in
-      self?.deleteQuotes(quotes)
+      self?.deleteQuotes(quotes: quotes)
     }
 
     let cancelAction = UIAlertAction(
@@ -1102,7 +1102,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
     present(alert, animated: true)
   }
 
-  private func deleteQuotes(_ quotes: [QuoteEntity]) {
+  private func deleteQuotes(quotes: [QuoteEntity]) {
     Task {
       do {
         let deleteInteractor = DeleteQuoteInteractor()
@@ -1140,7 +1140,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
     }
   }
 
-  private func shareBook(_ book: BookEntity) {
+  private func shareBook(book: BookEntity) {
     var items: [Any] = []
 
     if let title = book.title {
@@ -1170,15 +1170,47 @@ extension BookDetailViewController: UICollectionViewDelegate {
     present(activityViewController, animated: true)
   }
 
-  private func rateBook(_ book: BookEntity) {
-    #warning("TODO: Rate book")
+  private func rateBook(book: BookEntity) {
+    let ratingViewController = BookRatingViewController(
+      title: book.title ?? "",
+      initialRating: book.rating
+    ) { [weak self] rating in
+      self?.updateBookRating(rating: rating)
+    }
+    
+    if let sheet = ratingViewController.sheetPresentationController {
+      sheet.detents = [
+        .custom { context in context.maximumDetentValue * 0.4 }
+      ]
+      sheet.prefersGrabberVisible = true
+    }
+    
+    present(ratingViewController, animated: true)
+  }
+  
+  private func updateBookRating(rating: Double) {
+    Task {
+      do {
+        try await viewModel.updateRating(rating: rating)
+      } catch {
+        await MainActor.run {
+          let errorAlert = UIAlertController(
+            title: "Error",
+            message: "Failed to update rating: \(error.localizedDescription)",
+            preferredStyle: .alert
+          )
+          errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+          self.present(errorAlert, animated: true)
+        }
+      }
+    }
   }
 
-  private func editBook(_ book: BookEntity) {
+  private func editBook(book: BookEntity) {
     #warning("TODO: Edit book")
   }
 
-  private func deleteBook(_ book: BookEntity) {
+  private func deleteBook(book: BookEntity) {
     let alert = UIAlertController(
       title: "Delete Book",
       message:
@@ -1190,7 +1222,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
       title: "Delete",
       style: .destructive
     ) { [weak self] _ in
-      self?.performBookDeletion(book)
+      self?.performBookDeletion(book: book)
     }
 
     let cancelAction = UIAlertAction(
@@ -1204,7 +1236,7 @@ extension BookDetailViewController: UICollectionViewDelegate {
     present(alert, animated: true)
   }
 
-  private func performBookDeletion(_ book: BookEntity) {
+  private func performBookDeletion(book: BookEntity) {
     Task {
       do {
         try await ContextManager.shared.performAndSave { context in
