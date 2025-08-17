@@ -1,6 +1,6 @@
 import Foundation
 
-public struct BookSearchRepresentation: Sendable, Hashable {
+public struct BookSearchRepresentation: Sendable, Hashable, Identifiable {
   public let id: String
   public let title: String
   public let subtitle: String?

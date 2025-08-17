@@ -109,6 +109,19 @@ final class BookDetailViewModel: ObservableObject {
       }
     } ?? false
   }
+  
+  func updateRating(rating: Double) async throws {
+    guard let book else { throw BookDetailError.bookNotFound }
+    
+    try await contextManager.performAndSave { context in
+      let bookToUpdate = context.object(with: book.objectID) as? BookEntity
+      bookToUpdate?.rating = rating
+    }
+    
+    await MainActor.run {
+      self.book?.rating = rating
+    }
+  }
 }
 
 enum BookDetailError: Error, LocalizedError {
