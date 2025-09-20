@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24F74" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23788.4" systemVersion="24G84" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="BookEntity" representedClassName="BookEntity" syncable="YES" codeGenerationType="class">
         <attribute name="author" optional="YES" attributeType="String" defaultValueString=""/>
         <attribute name="bookDescription" optional="YES" attributeType="String"/>
@@ -14,8 +14,13 @@
         <attribute name="source" optional="YES" attributeType="Transformable" valueTransformerName="BookSourceTypeValueTransformer" customClassName="BookSourceTypeKind"/>
         <attribute name="status" optional="YES" attributeType="Transformable" valueTransformerName="BookStatusValueTransformer" customClassName="BookStatusTypeKind"/>
         <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="coverImageData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CoverImageDataEntity" inverseName="book" inverseEntity="CoverImageDataEntity"/>
         <relationship name="logs" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReadingLogEntity" inverseName="book" inverseEntity="ReadingLogEntity"/>
         <relationship name="quotes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="QuoteEntity" inverseName="book" inverseEntity="QuoteEntity"/>
+    </entity>
+    <entity name="CoverImageDataEntity" representedClassName="CoverImageDataEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="data" optional="YES" attributeType="Binary"/>
+        <relationship name="book" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="BookEntity" inverseName="coverImageData" inverseEntity="BookEntity"/>
     </entity>
     <entity name="QuoteEntity" representedClassName="QuoteEntity" syncable="YES" codeGenerationType="class">
         <attribute name="content" optional="YES" attributeType="String"/>

@@ -20,6 +20,13 @@
 Relationships:
 - logs: [ReadingLogEntity] - Cascade
 - quotes: [QuoteEntity] - Cascade
+- coverImageData: CoverImageData? - Cascade
+
+### CoverImageDataEntity
+- data: Binary Data
+
+Relationships:
+- book: BookEntity
 
 ### QuoteEntity
 - content: String

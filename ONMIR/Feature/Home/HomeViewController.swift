@@ -146,6 +146,28 @@ public final class HomeViewController: UIViewController {
     }
 
     @objc private func didTapAddBookButton() {
+        let alert = UIAlertController(title: "Add Book", message: "How would you like to add a book?", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Search Books", style: .default) { [weak self] _ in
+            self?.presentBookSearch()
+        })
+        
+        alert.addAction(UIAlertAction(title: "Add Manually", style: .default) { [weak self] _ in
+            self?.presentManualBookEntry()
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = view
+            popover.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.midY, width: 0, height: 0)
+            popover.permittedArrowDirections = []
+        }
+        
+        present(alert, animated: true)
+    }
+    
+    private func presentBookSearch() {
         let destination = BookSearchViewController { book in
             Task {
                 let _ = await self.viewModel.addBook(book: book)
@@ -156,9 +178,25 @@ public final class HomeViewController: UIViewController {
                 }
             }
         }
-      let navigationController = UINavigationController(rootViewController: destination)
-      navigationController.modalPresentationStyle = .overFullScreen
-        self.present(navigationController, animated: true)
+        let navigationController = UINavigationController(rootViewController: destination)
+        navigationController.modalPresentationStyle = .overFullScreen
+        present(navigationController, animated: true)
+    }
+    
+    private func presentManualBookEntry() {
+        let destination = ManualBookEntryViewController { manualBook in
+            Task {
+                let _ = await self.viewModel.addManualBook(book: manualBook)
+                await MainActor.run {
+                    self.readingBookCollectionView.reloadData()
+                    self.updateContentUnavailableView(isEmpty: self.viewModel.books.isEmpty)
+                    self.readingBookCollectionView.isHidden = self.viewModel.books.isEmpty
+                }
+            }
+        }
+        let navigationController = UINavigationController(rootViewController: destination)
+        navigationController.modalPresentationStyle = .overFullScreen
+        present(navigationController, animated: true)
     }
 }
 
@@ -171,6 +209,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let book = viewModel.books[indexPath.item]
         cell.prepare(
             imageURL: book.imageURL,
+            localImage: book.localImage,
             currentPage: book.currentPage,
             totalPage: book.totalPage
         )

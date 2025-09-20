@@ -52,7 +52,7 @@ extension HomeViewController {
             }
         }
 
-        func prepare(imageURL: URL?, currentPage: Int, totalPage: Int) {
+        func prepare(imageURL: URL?, localImage: UIImage?, currentPage: Int, totalPage: Int) {
             if totalPage <= 0 {
                 self.readingProgressLabel.text = ""
             } else {
@@ -66,7 +66,10 @@ extension HomeViewController {
                 self.readingProgressLabel.text = "\(percentage)%"
             }
 
-            if let thumbnailURL = imageURL {
+            // Priority: local image > remote URL
+            if let localImage = localImage {
+                coverImageView.image = localImage
+            } else if let thumbnailURL = imageURL {
                 imageDownloadTask = Task {
                     do {
                         let image = try await ImagePipeline.shared.image(for: thumbnailURL)
@@ -77,6 +80,9 @@ extension HomeViewController {
                         Logger.error(error)
                     }
                 }
+            } else {
+                coverImageView.image = nil
+                coverImageView.backgroundColor = .systemGray5
             }
         }
     }

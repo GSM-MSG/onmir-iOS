@@ -191,7 +191,10 @@ extension BookDetailViewController {
       titleLabel.text = book.title
       authorLabel.text = book.author
       
-      if let coverURL = book.coverImageURL {
+      switch book.coverImageResult {
+      case .image(let image):
+        coverImageView.image = image
+      case .url(let coverURL):
         let request = ImageRequest(url: coverURL)
         imageLoadingTask = Task {
           do {
@@ -208,6 +211,8 @@ extension BookDetailViewController {
             }
           }
         }
+      case .none:
+        coverImageView.backgroundColor = .systemGray6
       }
       
       updateRatingInfo(rating: book.rating)

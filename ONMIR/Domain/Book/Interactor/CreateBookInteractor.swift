@@ -1,5 +1,6 @@
 import CoreData
 import Foundation
+import UIKit
 
 public struct CreateBookInteractor: Sendable {
   private let contextManager: any CoreDataStack
@@ -24,7 +25,17 @@ public struct CreateBookInteractor: Sendable {
         BookSourceTypeKind(sourceType: $0)
       }
       bookEntity.status = request.status.map { BookStatusTypeKind(status: $0) }
-      bookEntity.coverImageURL = request.coverImageURL
+      // Handle cover image source
+      if let coverImageSource = request.coverImageSource {
+        switch coverImageSource {
+        case .url(let url):
+          bookEntity.coverImageURL = url
+        case .data(let data):
+          let coverImageEntity = CoverImageDataEntity(context: context)
+          coverImageEntity.data = data
+          bookEntity.coverImageData = coverImageEntity
+        }
+      }
 
       context.insert(bookEntity)
     }
@@ -44,7 +55,7 @@ extension CreateBookInteractor {
     public let rating: Double
     public let source: BookSourceType?
     public let status: BookStatusType?
-    public let coverImageURL: URL?
+    public let coverImageSource: CoverImageSource?
 
     public init(
       originalBookID: String,
@@ -58,7 +69,7 @@ extension CreateBookInteractor {
       rating: Double = 0.0,
       source: BookSourceType = .googleBooks,
       status: BookStatusType? = nil,
-      coverImageURL: URL? = nil
+      coverImageSource: CoverImageSource? = nil
     ) {
       self.originalBookID = originalBookID
       self.title = title
@@ -71,7 +82,7 @@ extension CreateBookInteractor {
       self.rating = rating
       self.source = source
       self.status = status
-      self.coverImageURL = coverImageURL
+      self.coverImageSource = coverImageSource
     }
   }
 }
